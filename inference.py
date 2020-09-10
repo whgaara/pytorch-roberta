@@ -52,6 +52,7 @@ def inference_finetune(text):
     print('加载模型成功！')
     with torch.no_grad():
         output_tensor = model(text2id, segments)[:, 1:input_len+1, :]
+        output_tensor = torch.nn.Softmax(dim=-1)(output_tensor)
         output = torch.argmax(output_tensor, dim=-1).squeeze(0).tolist()
         for index, num in enumerate(output):
             word = roberta_data.tokenizer.id_to_token(num)
@@ -76,5 +77,4 @@ def load_pretrain(text=''):
 if __name__ == '__main__':
     # load_finetune()
     # load_pretrain()
-    # inference_finetune('杨金水不能杀海瑞')
-    inference_finetune('杨金水不能杀海瑞')
+    inference_finetune('平头医保科技')

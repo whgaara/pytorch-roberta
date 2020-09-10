@@ -10,7 +10,7 @@ VocabPath = 'checkpoint/pretrain/vocab.txt'
 FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 
 # ## 训练参数 ## #
-Epochs = 16
+Epochs = 12
 MaskRate = 0.15
 BatchSize = 16
 RepeatNum = 10

@@ -5,9 +5,7 @@ class Mlm(nn.Module):
     def __init__(self, hidden_size, vocab_size):
         super(Mlm, self).__init__()
         self.mlm_dense = nn.Linear(hidden_size, vocab_size)
-        # self.mlm_softmax = nn.Softmax(dim=-1)
 
     def forward(self, feedforward_x):
         feedforward_x = self.mlm_dense(feedforward_x)
-        # result = self.mlm_softmax(feedforward_x)
         return feedforward_x
