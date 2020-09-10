@@ -43,6 +43,22 @@ def get_id_from_text(text):
     return inputs, segments, roberta_data
 
 
+def get_finetune_model_parameters():
+    model = torch.load('checkpoint/finetune/roberta_trained.model')
+    layers = model.state_dict().keys()
+    for layer in layers:
+        print(layer)
+    return model.state_dict()
+
+
+def get_pretrain_model_parameters():
+    model = torch.load('checkpoint/pretrain/chinese_wwm_pytorch.bin')
+    layers = dict(model).keys()
+    for layer in layers:
+        print(layer)
+    return model.state_dict()
+
+
 def inference_finetune(text):
     input_len = len(text)
     text2id, segments, roberta_data = get_id_from_text(text)
@@ -57,21 +73,6 @@ def inference_finetune(text):
         for index, num in enumerate(output):
             word = roberta_data.tokenizer.id_to_token(num)
             print(word, num, output_tensor[0][index][num].item())
-
-
-def load_finetune(text=''):
-    model = torch.load('checkpoint/finetune/roberta_trained.model.ep0')
-    layers = model.state_dict().keys()
-    for layer in layers:
-        print(layer)
-
-
-def load_pretrain(text=''):
-    # model = torch.load('checkpoint/pretrain/pytorch_model.bin')
-    model = torch.load('checkpoint/pretrain/chinese_wwm_pytorch.bin')
-    layers = dict(model).keys()
-    for layer in layers:
-        print(layer)
 
 
 if __name__ == '__main__':
