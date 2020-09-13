@@ -13,6 +13,10 @@ if __name__ == '__main__':
 
     dataset = RobertaDataSet(CorpusPath)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
+
+    # 需要新建一个
+    testset = TestDataSet(TestPath)
+
     optim = Adam(roberta.parameters(), lr=LearningRate)
     criterion = nn.CrossEntropyLoss().to(device)
 
@@ -42,3 +46,6 @@ if __name__ == '__main__':
         torch.save(roberta.cpu(), output_path)
         roberta.to(device)
         print('EP:%d Model Saved on:%s\n' % (epoch, output_path))
+
+        # test
+

@@ -1,6 +1,6 @@
 def cut_sentences():
     f = open('data/text.txt', 'r', encoding='utf-8')
-    g = open('data/train_text.txt', 'a+', encoding='utf-8')
+    g = open('data/src_data/src_data.txt', 'a+', encoding='utf-8')
     line = f.read()
     lines = line.split('。')
     for sentence in lines:

@@ -5,7 +5,9 @@ device = torch.device('cuda:0' if cuda_condition else 'cpu')
 
 # ## 文件路径 ## #
 ModelSavePath = 'checkpoint/finetune'
-CorpusPath = 'data'
+SourcePath = 'data/src_data'
+CorpusPath = 'data/train_data'
+TestPath = 'data/test_data'
 VocabPath = 'checkpoint/pretrain/vocab.txt'
 FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
