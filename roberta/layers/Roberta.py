@@ -64,8 +64,8 @@ class Roberta(nn.Module):
             attention_masks.append(attention_mask.tolist())
         return torch.tensor(attention_masks)
 
-    def load_pretrain(self):
-        pretrain_model_dict = torch.load(PretrainPath)
+    def load_pretrain(self, path=PretrainPath):
+        pretrain_model_dict = torch.load(path)
         finetune_model_dict = self.state_dict()
         new_parameter_dict = {}
 
