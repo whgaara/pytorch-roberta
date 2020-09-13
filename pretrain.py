@@ -2,13 +2,14 @@ import torch.nn as nn
 
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from optim_schedule import ScheduledOptim
 from roberta.data.dataset import *
 from roberta.layers.Roberta import Roberta
 
 
 if __name__ == '__main__':
     roberta = Roberta().to(device)
+    roberta.load_pretrain()
+
     dataset = RobertaDataSet(CorpusPath)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
     optim = Adam(roberta.parameters(), lr=LearningRate)

@@ -52,11 +52,11 @@ def get_finetune_model_parameters():
 
 
 def get_pretrain_model_parameters():
-    model = torch.load('checkpoint/pretrain/chinese_wwm_pytorch.bin')
+    model = torch.load('checkpoint/pretrain/pytorch_model.bin')
     layers = dict(model).keys()
     for layer in layers:
         print(layer)
-    return model.state_dict()
+    return dict(model)
 
 
 def inference_finetune(text):
@@ -76,6 +76,6 @@ def inference_finetune(text):
 
 
 if __name__ == '__main__':
-    # load_finetune()
-    # load_pretrain()
-    inference_finetune('平头医保科技')
+    # get_pretrain_model_parameters()
+    get_finetune_model_parameters()
+    # inference_finetune('平头医保科技')
