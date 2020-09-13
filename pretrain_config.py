@@ -11,15 +11,15 @@ FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 
 # ## 训练参数 ## #
-Epochs = 12
+Epochs = 4
+BatchSize = 4
+VocabSize = 21128
+HiddenLayerNum = 12
 MaskRate = 0.15
-BatchSize = 16
 RepeatNum = 10
 HiddenSize = 768
 IntermediateSize = 3072
-VocabSize = 21128
 AttentionHeadNum = 12
-HiddenLayerNum = 12
 SentenceLength = 512
 DropOut = 0.1
 
@@ -55,6 +55,6 @@ local2target_transformer = {
 }
 
 local2target_mlm = {
-    'mlm.mlm_dense.weight': 'cls.predictions.transform.dense.weight',
-    'mlm.mlm_dense.bias': 'cls.predictions.transform.dense.bias'
+    'mlm.mlm_dense.weight': 'cls.predictions.decoder.weight',
+    'mlm.mlm_dense.bias': 'cls.predictions.bias'
 }

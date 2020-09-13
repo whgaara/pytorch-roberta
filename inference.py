@@ -77,5 +77,6 @@ def inference_finetune(text):
 
 if __name__ == '__main__':
     # get_pretrain_model_parameters()
-    get_finetune_model_parameters()
-    # inference_finetune('平头医保科技')
+    # get_finetune_model_parameters()
+    inference_finetune('平头医保科技')
+    inference_finetune('中华人民共和国')
