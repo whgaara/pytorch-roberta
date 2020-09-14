@@ -1,3 +1,6 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+
 import torch.nn as nn
 
 from torch.optim import Adam

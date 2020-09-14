@@ -16,10 +16,10 @@ PronunciationPath = 'data/char_meta.txt'
 # ## 训练参数 ## #
 Epochs = 4
 BatchSize = 4
-VocabSize = 21128
-HiddenLayerNum = 12
 MaskRate = 0.15
 RepeatNum = 10
+VocabSize = 21128
+HiddenLayerNum = 12
 HiddenSize = 768
 IntermediateSize = 3072
 AttentionHeadNum = 12
