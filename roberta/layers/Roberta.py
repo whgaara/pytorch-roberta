@@ -1,9 +1,7 @@
-import torch
 import torch.nn as nn
 
 from pretrain_config import *
 from roberta.common.tokenizers import Tokenizer
-from roberta.layers.Gelu import GELU
 from roberta.layers.Transformer import Transformer
 from roberta.layers.RobertaEmbeddings import RobertaEmbeddings
 from roberta.layers.Mlm import Mlm
