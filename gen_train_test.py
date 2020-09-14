@@ -29,7 +29,7 @@ def gen_train_test():
                 line = line.strip()
                 rad = random.randint(0, 10)
                 if rad < 1:
-                    f_test.write(random_wrong(line) + '\n')
+                    f_test.write(line + '-***-' + random_wrong(line) + '\n')
                 else:
                     f_train.write(line + '\n')
 

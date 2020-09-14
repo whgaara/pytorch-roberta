@@ -159,3 +159,48 @@ class RobertaDataSet(Dataset):
             tmp[id] = 1.0
             onehot.append(tmp)
         return onehot
+
+
+class RobertaTestSet(Dataset):
+    def __init__(self, test_path):
+        self.tokenizer = Tokenizer(VocabPath)
+        self.test_path = test_path
+        self.test_lines = []
+        self.label_lines = []
+        # 读取数据
+        with open(self.test_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line:
+                    line = line.strip()
+                    line_list = line.split('-***-')
+                    self.test_lines.append(line_list[1])
+                    self.label_lines.append(line_list[0])
+
+    def __len__(self):
+        return len(self.label_lines)
+
+    def __getitem__(self, item):
+        output = {}
+        test_text = self.test_lines[item]
+        label_text = self.label_lines[item]
+        test_token = self.__gen_token(test_text)
+        label_token = self.__gen_token(label_text)
+        segment_ids = [1 if x else 0 for x in label_token]
+        output['input_token_ids'] = test_token
+        output['token_ids_labels'] = label_token
+        output['segment_ids'] = segment_ids
+        instance = {k: torch.tensor(v, dtype=torch.long) for k, v in output.items()}
+        return instance
+
+    def __gen_token(self, tokens):
+        tar_token_ids = [101]
+        tokens = list(tokens)
+        tokens = tokens[:510]
+        for token in tokens:
+            token_id = self.tokenizer.token_to_id(token)
+            tar_token_ids.append(token_id)
+        tar_token_ids.append(102)
+        if len(tar_token_ids) < 512:
+            for i in range(512 - len(tar_token_ids)):
+                tar_token_ids.append(0)
+        return tar_token_ids

@@ -59,7 +59,7 @@ def get_pretrain_model_parameters():
     return dict(model)
 
 
-def inference_finetune(text):
+def inference_test(text):
     input_len = len(text)
     text2id, segments, roberta_data = get_id_from_text(text)
     print('文字转换成功！')
@@ -75,8 +75,28 @@ def inference_finetune(text):
             print(word, num, output_tensor[0][index][num].item())
 
 
+def get_topk(text):
+    input_len = len(text)
+    text2id, segments, roberta_data = get_id_from_text(text)
+    model = torch.load(FinetunePath).to(device)
+    model.eval()
+    with torch.no_grad():
+        result = []
+        output_tensor = model(text2id, segments)[:, 1:input_len + 1, :]
+        output_tensor = torch.nn.Softmax(dim=-1)(output_tensor)
+        output_topk = torch.topk(output_tensor, 5).indices.squeeze(0).tolist()
+        for i, words in enumerate(output_topk):
+            tmp = []
+            for j, candidate in enumerate(words):
+                word = roberta_data.tokenizer.id_to_token(candidate)
+                tmp.append(word)
+            result.append(tmp)
+    return result
+
+
 if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
-    inference_finetune('平头医保科技')
-    inference_finetune('中华人民共和国')
+    inference_test('平安医保科技')
+    # inference_test('中华人民共和国')
+    # get_topk('平头医保科技')
