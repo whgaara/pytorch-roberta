@@ -1,14 +1,8 @@
-"""
-Requirements:
-
- - java (required only if tree edit distance is used)
- - numpy
-
-"""
 import numpy as np
-from subprocess import Popen, PIPE, STDOUT
-import os
 import argparse
+
+from subprocess import Popen, PIPE, STDOUT
+
 
 IDCS = {'\u2ff0': 2,  # 12 ideographic description characters and their capacity of son nodes
         '\u2ff1': 2,

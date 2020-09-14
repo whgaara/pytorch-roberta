@@ -1,6 +1,7 @@
 import torch
 
-from pretrain_config import FinetunePath, device
+from char_sim import CharFuncs
+from pretrain_config import FinetunePath, device, PronunciationPath
 from roberta.data.dataset import RobertaTrainingData
 
 
@@ -84,19 +85,58 @@ def get_topk(text):
         result = []
         output_tensor = model(text2id, segments)[:, 1:input_len + 1, :]
         output_tensor = torch.nn.Softmax(dim=-1)(output_tensor)
-        output_topk = torch.topk(output_tensor, 5).indices.squeeze(0).tolist()
-        for i, words in enumerate(output_topk):
+        output_topk_prob = torch.topk(output_tensor, 5).values.squeeze(0).tolist()
+        output_topk_indice = torch.topk(output_tensor, 5).indices.squeeze(0).tolist()
+        for i, words in enumerate(output_topk_indice):
             tmp = []
             for j, candidate in enumerate(words):
                 word = roberta_data.tokenizer.id_to_token(candidate)
                 tmp.append(word)
             result.append(tmp)
+    return result, output_topk_prob
+
+
+def curve(confidence, similarity):
+    flag1 = 20 / 3 * confidence + similarity - 21.2 / 3 > 0
+    flag2 = 0.1 * confidence + similarity - 0.6 > 0
+    if flag1 or flag2:
+        return True
+    return False
+
+
+def inference(text):
+    char_func = CharFuncs(PronunciationPath)
+    candidates, probs = get_topk(text)
+    text_list = list(text)
+    result = {
+        '原句': text,
+        '纠正': '',
+        '纠正数据': [
+        ]
+    }
+
+    for i, ori in enumerate(text_list):
+        correct = {}
+        correct['原字'] = ori
+        candidate = candidates[i]
+        if ori in candidate:
+            continue
+        else:
+            max_can = ''
+            max_sim = 0
+            for j, can in enumerate(candidate):
+                similarity = char_func.similarity(ori, can)
+                if similarity > max_sim:
+                    max_can = can
+            correct['新字'] = max_can
+            correct['相似度'] = max_sim
+            result['纠正数据'].append(correct)
     return result
 
 
 if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
-    inference_test('平安医保科技')
-    # inference_test('中华人民共和国')
-    # get_topk('平头医保科技')
+    # inference_test('平安医保科技')
+    result = inference('平安医保黑技')
+    print(result)

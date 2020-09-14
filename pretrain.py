@@ -1,4 +1,3 @@
-import math
 import torch.nn as nn
 
 from torch.optim import Adam
@@ -54,7 +53,6 @@ if __name__ == '__main__':
             test_count = 0
             test_acc = 0
             for test_data in testset:
-                # data = {k: v.to(device) for k, v in test_data.items()}
                 input_token = test_data['input_token_ids'].unsqueeze(0).to(device)
                 segment_ids = test_data['segment_ids'].unsqueeze(0).to(device)
                 input_token_list = input_token.tolist()
@@ -71,6 +69,7 @@ if __name__ == '__main__':
                         break
                     if label in output_topk[i]:
                         test_acc += 1
-            acc = float(test_acc) / float(test_count)
-            acc = round(acc, 2)
-            print('纠正正确率：%s\n' % acc)
+            if test_count:
+                acc = float(test_acc) / float(test_count)
+                acc = round(acc, 2)
+                print('纠正正确率：%s\n' % acc)

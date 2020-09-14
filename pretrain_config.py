@@ -11,6 +11,7 @@ TestPath = 'data/test_data/test.txt'
 VocabPath = 'checkpoint/pretrain/vocab.txt'
 FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
+PronunciationPath = 'data/char_meta.txt'
 
 # ## 训练参数 ## #
 Epochs = 4
