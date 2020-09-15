@@ -14,17 +14,23 @@ PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
 # 任务模式
-TaskMode = 'wrong_correct'
+ModelClass = 'Bert'
 
 # ## 训练参数 ## #
+if ModelClass == 'Bert':
+    RepeatNum = 1
+    SentenceLength = 128
+if ModelClass == 'Roberta':
+    RepeatNum = 10
+    SentenceLength = 512
+
 Epochs = 8
 MaskRate = 0.15
 BatchSize = 32
-RepeatNum = 1
 VocabSize = 21128
-SentenceLength = 128
 
 HiddenSize = 768
+# transformer块个数
 HiddenLayerNum = 4
 IntermediateSize = 3072
 AttentionHeadNum = 12

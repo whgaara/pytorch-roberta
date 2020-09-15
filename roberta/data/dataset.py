@@ -127,15 +127,15 @@ class RobertaDataSet(Dataset):
                 texts_ids = self.roberta_data.texts_to_ids(texts)
                 self.src_lines.append(texts_ids)
         for line in self.src_lines:
-            if TaskMode == 'wrong_correct':
-                instances = self.roberta_data.ids_all_mask(line)
-            else:
+            if ModelClass == 'Roberta':
                 instances = self.roberta_data.ids_to_mask(line)
+            else:
+                instances = self.roberta_data.ids_all_mask(line)
             for instance in instances:
                 self.tar_lines.append(instance)
 
-    def __get_texts(self, mode='single'):
-        if mode == 'group':
+    def __get_texts(self, mode=ModelClass):
+        if mode == 'Roberta':
             filenames = glob.glob('%s/*.txt' % self.corpus_path)
             np.random.shuffle(filenames)
             count, texts = 0, []
@@ -152,7 +152,7 @@ class RobertaDataSet(Dataset):
             if texts:
                 yield texts
 
-        if mode == 'single':
+        if mode == 'Bert':
             filenames = glob.glob('%s/*.txt' % self.corpus_path)
             np.random.shuffle(filenames)
             for filename in filenames:
