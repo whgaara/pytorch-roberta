@@ -223,7 +223,6 @@ class CharFuncs(object):
         """
         this function returns weighted similarity. When used in FASPell, each weight can only be 0 or 1.
         """
-
         # assert char1 in self.char_dict
         # assert char2 in self.char_dict
         # shape_w, sound_w, freq_w = weights

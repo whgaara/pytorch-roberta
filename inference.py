@@ -104,7 +104,7 @@ def curve(confidence, similarity):
     return False
 
 
-def inference(text):
+def inference(text, mode='p'):
     char_func = CharFuncs(PronunciationPath)
     candidates, probs = get_topk(text)
     text_list = list(text)
@@ -126,23 +126,27 @@ def inference(text):
             correct_sentence.append(ori)
             continue
         else:
-            max_can = ''
-            max_sim = 0
-            max_conf = 0
-            for j, can in enumerate(candidate):
-                similarity = char_func.similarity(ori, can)
-                if similarity > max_sim:
-                    max_can = can
-                    max_sim = similarity
-                    max_conf = confidence[j]
-            # if max_sim > 0.5:
-            if curve(max_conf, max_sim):
-                correct['新字'] = max_can
-                correct['相似度'] = max_sim
-                result['纠正数据'].append(correct)
-                correct_sentence.append(max_can)
+            if mode == 'p':
+                max_can = ''
+                max_sim = 0
+                max_conf = 0
+                for j, can in enumerate(candidate):
+                    similarity = char_func.similarity(ori, can)
+                    if similarity > max_sim:
+                        max_can = can
+                        max_sim = similarity
+                        max_conf = confidence[j]
+                # if max_sim > 0.5:
+                if curve(max_conf, max_sim):
+                    correct['新字'] = max_can
+                    correct['相似度'] = max_sim
+                    result['纠正数据'].append(correct)
+                    correct_sentence.append(max_can)
+                else:
+                    correct_sentence.append(ori)
             else:
-                correct_sentence.append(ori)
+                correct_sentence.append(candidate[0])
+
     result['纠正'] = ''.join(correct_sentence)
     return result
 
@@ -151,5 +155,5 @@ if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
     # inference_test('平安医保科技')
-    result = inference('五槿滴节到天明')
+    result = inference('鱼顽龙门触天霞', 's')
     print(result)

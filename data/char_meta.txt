@@ -1555,9 +1555,9 @@ U+5411	向	xiang4	向
 U+5412	吒	zha4,zha1	吒
 U+5413	吓	ha4,xia4	吓
 U+5414	吔	ye3,ye1	吔
-U+5415	吕		吕
+U+5415	吕	lv3	吕
 U+5416	吖	ya1,a1	吖
-U+5417	吗		吗
+U+5417	吗	ma1	吗
 U+5418	吘	ou3	吘
 U+5419	吙	huo1	吙
 U+541A	吚	xi1,yi1	吚
@@ -1588,7 +1588,7 @@ U+5432	吲	shen3,yin3	吲
 U+5433	吳	wu2,yu2	吳
 U+5434	吴	wu2,tun1	吴
 U+5435	吵	miao3,chao3,chao1,chao4	吵
-U+5436	吶		吶
+U+5436	吶	na4	吶
 U+5437	吷	xue4,chuo4,jue2	吷
 U+5438	吸	xi1	吸
 U+5439	吹	chui1,chui4	吹
@@ -1677,7 +1677,7 @@ U+548B	咋	ze2,zha4,za3,zha1	咋
 U+548C	和	he4,he2,huo4,huo2,hu2	和
 U+548D	咍	hai1,tai1	咍
 U+548E	咎	jiu4,gao1	咎
-U+548F	咏		咏
+U+548F	咏	yong3	咏
 U+5490	咐	fu2,fu4	咐
 U+5491	咑		咑
 U+5492	咒	zhou4	咒
@@ -1744,14 +1744,14 @@ U+54CE	哎	ai1	哎
 U+54CF	哏	hen3,gen2	哏
 U+54D0	哐	kuang1,qiang1	哐
 U+54D1	哑	ya3	哑
-U+54D2	哒		哒
+U+54D2	哒	da2	哒
 U+54D3	哓		哓
-U+54D4	哔		哔
+U+54D4	哔	bi1	哔
 U+54D5	哕		哕
 U+54D6	哖		哖
 U+54D7	哗	hua1	哗
 U+54D8	哘		哘
-U+54D9	哙		哙
+U+54D9	哙	kuai4	哙
 U+54DA	哚	duo3	哚
 U+54DB	哛		哛
 U+54DC	哜		哜
@@ -2029,7 +2029,7 @@ U+55EB	嗫		嗫
 U+55EC	嗬	he1	嗬
 U+55ED	嗭		嗭
 U+55EE	嗮		嗮
-U+55EF	嗯		嗯
+U+55EF	嗯	en1	嗯
 U+55F0	嗰		嗰
 U+55F1	嗱		嗱
 U+55F2	嗲	dia3	嗲
