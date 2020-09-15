@@ -25,19 +25,16 @@ if ModelClass == 'Roberta':
     SentenceLength = 512
 
 Epochs = 8
+DropOut = 0.1
 MaskRate = 0.15
 BatchSize = 32
 VocabSize = 21128
-
 HiddenSize = 768
+LearningRate = 1e-3
 # transformer块个数
 HiddenLayerNum = 4
 IntermediateSize = 3072
 AttentionHeadNum = 12
-DropOut = 0.1
-
-LearningRate = 1e-3
-NumWarmupSteps = 0
 
 # 参数名配对
 local2target_emb = {
