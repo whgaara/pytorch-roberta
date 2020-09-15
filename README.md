@@ -22,7 +22,8 @@ bert作为当代NLP的基石型模型，熟练掌握是至关重要的。笔者�
 预测中有一个参数：mode，值为'p'或者's'，前者表示按拼音相似性纠错，后者表示按字形相似性纠错。遗憾的是汉字的笔画数据本人没空准备，因此自形相似性的纠正字是候选字中的top1。
 
 如果加载预训练模型：
-- 本人使用的预训练模型是哈工大的版本：https://pan.iflytek.com/link/92ADD2C34C91F3B44E0EC97F101F89D8，因为代码使自己手撸，因此参数名存在出入，所以pretrain_config.py中会存在对应的参数名映射表。
+- 本人使用的预训练模型是哈工大的版本：https://pan.iflytek.com/link/92ADD2C34C91F3B44E0EC97F101F89D8
+。因为代码使自己手撸，因此参数名存在出入，所以pretrain_config.py中会存在对应的参数名映射表，预训练模型保存在checkpoint/pretrain下即可。
 如果你有其他的预训练模型要注意参数名的映射问题。此外，在使用预训练模型后，SentenceLength要改成512，HiddenLayerNum要改成12。其他步骤则与上述相同。
 
 ## 经验
