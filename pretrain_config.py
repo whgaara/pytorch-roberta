@@ -19,13 +19,13 @@ TaskMode = 'wrong_correct'
 # ## 训练参数 ## #
 Epochs = 8
 MaskRate = 0.15
-BatchSize = 8
+BatchSize = 32
 RepeatNum = 1
 VocabSize = 21128
 SentenceLength = 128
 
 HiddenSize = 768
-HiddenLayerNum = 12
+HiddenLayerNum = 4
 IntermediateSize = 3072
 AttentionHeadNum = 12
 DropOut = 0.1
