@@ -1,8 +1,8 @@
 # 最直接的Bert和Roberta
-- 无炫技
-- 更清晰、更轻量级的torch版bert
-- csdn：https://blog.csdn.net/BmwGaara
-- 知乎：https://zhuanlan.zhihu.com/c_1264223811643252736
+无炫技
+更清晰、更轻量级的torch版bert
+csdn：https://blog.csdn.net/BmwGaara
+知乎：https://zhuanlan.zhihu.com/c_1264223811643252736
 
 ## 说明
 bert作为当代NLP的基石型模型，熟练掌握是至关重要的。笔者阅读了很多大牛的代码，发现很多内容过于反锁，考虑的范畴与功能也非常的复杂，本着让更多小伙伴能通过代码直击bert精髓因此自己一行行纯手工敲出这个项目，尽可能做到的是纯粹。
@@ -23,7 +23,7 @@ bert作为当代NLP的基石型模型，熟练掌握是至关重要的。笔者�
 
 如果加载预训练模型：
 - 本人使用的预训练模型是哈工大的版本：https://pan.iflytek.com/link/92ADD2C34C91F3B44E0EC97F101F89D8
-。因为代码使自己手撸，因此参数名存在出入，所以pretrain_config.py中会存在对应的参数名映射表，预训练模型保存在checkpoint/pretrain下即可。
+因为代码使自己手撸，因此参数名存在出入，所以pretrain_config.py中会存在对应的参数名映射表，预训练模型保存在checkpoint/pretrain下即可。
 如果你有其他的预训练模型要注意参数名的映射问题。此外，在使用预训练模型后，SentenceLength要改成512，HiddenLayerNum要改成12。其他步骤则与上述相同。
 
 ## 经验
