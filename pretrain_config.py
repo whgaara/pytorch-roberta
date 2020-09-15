@@ -13,6 +13,9 @@ FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
+# 任务模式
+TaskMode = 'wrong_correct'
+
 # ## 训练参数 ## #
 Epochs = 8
 MaskRate = 0.15

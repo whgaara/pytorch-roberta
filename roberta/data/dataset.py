@@ -46,9 +46,6 @@ class RobertaTrainingData(object):
         return texts_ids
 
     def ids_to_mask(self, texts_ids):
-        """
-        这里只对每个字做了mask，其实还可以考虑先对句子进行分词，如果是一个词的，可以对词中所有字同时进行mask
-        """
         instances = []
         total_ids = []
         total_masks = []
@@ -87,6 +84,37 @@ class RobertaTrainingData(object):
             instances.append([tmp_ids, tmp_masks])
         return instances
 
+    def ids_all_mask(self, texts_ids):
+        instances = []
+        tmp_ids = [101]
+
+        # 格式化数据
+        for token_ids in texts_ids:
+            if isinstance(token_ids, list):
+                for token_id in token_ids:
+                    tmp_ids.append(token_id)
+                    if len(tmp_ids) == SentenceLength - 1:
+                        break
+            else:
+                tmp_ids.append(token_ids)
+                if len(tmp_ids) == SentenceLength - 1:
+                    break
+            if len(tmp_ids) == SentenceLength - 1:
+                break
+
+        tmp_ids.append(102)
+        input_length = len(tmp_ids) - 2
+        if len(tmp_ids) < SentenceLength:
+            for i in range(SentenceLength - len(tmp_ids)):
+                tmp_ids.append(0)
+
+        for i in range(1, input_length + 1):
+            tmp_masks = [0] * SentenceLength
+            rand_num = np.random.randint(0, VocabSize)
+            tmp_masks[i] = rand_num
+            instances.append([tmp_ids, tmp_masks])
+        return instances
+
 
 class RobertaDataSet(Dataset):
     def __init__(self, corpus_path):
@@ -99,7 +127,10 @@ class RobertaDataSet(Dataset):
                 texts_ids = self.roberta_data.texts_to_ids(texts)
                 self.src_lines.append(texts_ids)
         for line in self.src_lines:
-            instances = self.roberta_data.ids_to_mask(line)
+            if TaskMode == 'wrong_correct':
+                instances = self.roberta_data.ids_all_mask(line)
+            else:
+                instances = self.roberta_data.ids_to_mask(line)
             for instance in instances:
                 self.tar_lines.append(instance)
 
