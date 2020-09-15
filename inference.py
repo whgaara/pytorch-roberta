@@ -1,7 +1,7 @@
 import torch
 
 from char_sim import CharFuncs
-from pretrain_config import FinetunePath, device, PronunciationPath
+from pretrain_config import FinetunePath, device, PronunciationPath, SentenceLength
 from roberta.data.dataset import RobertaTrainingData
 
 
@@ -15,7 +15,7 @@ def get_id_from_text(text):
     inputs.append(roberta_data.token_cls_id)
     segments.append(1)
     for id in ids:
-        if len(inputs) < 511:
+        if len(inputs) < SentenceLength - 1:
             if isinstance(id, list):
                 for x in id:
                     inputs.append(x)
@@ -32,10 +32,10 @@ def get_id_from_text(text):
         print('len error!')
         return None
 
-    if len(inputs) < 511:
+    if len(inputs) < SentenceLength - 1:
         inputs.append(roberta_data.token_sep_id)
         segments.append(1)
-        for i in range(512 - len(inputs)):
+        for i in range(SentenceLength - len(inputs)):
             inputs.append(roberta_data.token_pad_id)
             segments.append(roberta_data.token_pad_id)
 
@@ -119,6 +119,7 @@ def inference(text):
         correct = {}
         correct['原字'] = ori
         candidate = candidates[i]
+        print('原字：%s；候选字：%s' % (ori, candidate))
         if ori in candidate:
             continue
         else:
@@ -138,5 +139,5 @@ if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
     # inference_test('平安医保科技')
-    result = inference('平安医保黑技')
+    result = inference('一曲长歌一悠回')
     print(result)

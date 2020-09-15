@@ -14,16 +14,17 @@ PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
 # ## 训练参数 ## #
-Epochs = 4
-BatchSize = 4
+Epochs = 8
 MaskRate = 0.15
-RepeatNum = 10
+BatchSize = 8
+RepeatNum = 1
 VocabSize = 21128
-HiddenLayerNum = 12
+SentenceLength = 128
+
 HiddenSize = 768
+HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12
-SentenceLength = 512
 DropOut = 0.1
 
 LearningRate = 1e-3

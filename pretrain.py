@@ -12,7 +12,9 @@ from roberta.layers.Roberta_mlm import Roberta
 if __name__ == '__main__':
     roberta = Roberta().to(device)
     print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
-    roberta.load_pretrain()
+
+    if SentenceLength == 512:
+        roberta.load_pretrain()
 
     dataset = RobertaDataSet(CorpusPath)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
@@ -34,7 +36,6 @@ if __name__ == '__main__':
             input_token = data['input_token_ids']
             segment_ids = data['segment_ids']
             label = data['token_ids_labels']
-            onehot_label = data['onehot_labels'].float()
             mlm_output = roberta(input_token, segment_ids).permute(0, 2, 1)
             mask_loss = criterion(mlm_output, label)
             print_loss = mask_loss.item()
