@@ -74,7 +74,7 @@ class Roberta(nn.Module):
             new_parameter_dict[local] = pretrain_model_dict[target]
 
         # 加载transformerblock层参数
-        for i in range(HiddenLayerNum):
+        for i in range(self.num_hidden_layers):
             for key in local2target_transformer:
                 local = key % i
                 target = local2target_transformer[key] % i
