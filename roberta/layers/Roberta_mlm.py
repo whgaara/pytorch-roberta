@@ -98,5 +98,5 @@ class Roberta(nn.Module):
         for i in range(self.num_hidden_layers):
             feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
         # mlm
-        output = self.mlm(feedforward_x)
+        output = self.mlm(feedforward_x, self.roberta_emd.token_embeddings.weight)
         return output
