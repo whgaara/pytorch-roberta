@@ -60,8 +60,3 @@ local2target_transformer = {
     'transformer_blocks.%s.feedforward_layernorm.weight': 'bert.encoder.layer.%s.output.LayerNorm.weight',
     'transformer_blocks.%s.feedforward_layernorm.bias': 'bert.encoder.layer.%s.output.LayerNorm.bias',
 }
-
-local2target_mlm = {
-    'mlm.mlm_dense.weight': 'cls.predictions.decoder.weight',
-    'mlm.mlm_dense.bias': 'cls.predictions.bias'
-}
