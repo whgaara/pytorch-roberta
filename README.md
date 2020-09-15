@@ -1,8 +1,7 @@
-# 最直接的Bert和Roberta
-无炫技
-更清晰、更轻量级的torch版bert
-csdn：https://blog.csdn.net/BmwGaara
-知乎：https://zhuanlan.zhihu.com/c_1264223811643252736
+# 无炫技：最直接的Bert和Roberta
+-更清晰、更轻量级的torch版bert
+-csdn：https://blog.csdn.net/BmwGaara
+-知乎：https://zhuanlan.zhihu.com/c_1264223811643252736
 
 ## 说明
 bert作为当代NLP的基石型模型，熟练掌握是至关重要的。笔者阅读了很多大牛的代码，发现很多内容过于反锁，考虑的范畴与功能也非常的复杂，本着让更多小伙伴能通过代码直击bert精髓因此自己一行行纯手工敲出这个项目，尽可能做到的是纯粹。
