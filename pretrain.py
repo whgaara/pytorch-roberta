@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from roberta.data.dataset import *
-from roberta.layers.Roberta import Roberta
+from roberta.layers.Roberta_mlm import Roberta
 
 
 if __name__ == '__main__':
