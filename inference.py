@@ -134,7 +134,7 @@ def inference(text):
                 if similarity > max_sim:
                     max_can = can
                     max_sim = similarity
-                    max_conf = confidence[i]
+                    max_conf = confidence[j]
             # if max_sim > 0.5:
             if curve(max_conf, max_sim):
                 correct['新字'] = max_can
@@ -151,5 +151,5 @@ if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
     # inference_test('平安医保科技')
-    result = inference('糖化講境惹尘烟')
+    result = inference('五槿滴节到天明')
     print(result)

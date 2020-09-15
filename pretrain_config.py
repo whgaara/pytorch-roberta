@@ -27,7 +27,7 @@ if ModelClass == 'Roberta':
 Epochs = 8
 DropOut = 0.1
 MaskRate = 0.15
-BatchSize = 32
+BatchSize = 4
 VocabSize = 21128
 HiddenSize = 768
 LearningRate = 1e-3
