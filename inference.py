@@ -108,6 +108,7 @@ def inference(text):
     char_func = CharFuncs(PronunciationPath)
     candidates, probs = get_topk(text)
     text_list = list(text)
+    correct_sentence = []
     result = {
         '原句': text,
         '纠正': '',
@@ -121,6 +122,7 @@ def inference(text):
         candidate = candidates[i]
         print('原字：%s；候选字：%s' % (ori, candidate))
         if ori in candidate:
+            correct_sentence.append(ori)
             continue
         else:
             max_can = ''
@@ -129,9 +131,14 @@ def inference(text):
                 similarity = char_func.similarity(ori, can)
                 if similarity > max_sim:
                     max_can = can
-            correct['新字'] = max_can
-            correct['相似度'] = max_sim
-            result['纠正数据'].append(correct)
+            if max_sim > 0.5:
+                correct['新字'] = max_can
+                correct['相似度'] = max_sim
+                result['纠正数据'].append(correct)
+                correct_sentence.append(max_can)
+            else:
+                correct_sentence.append(ori)
+    result['纠正'] = ''.join(correct_sentence)
     return result
 
 
@@ -139,5 +146,5 @@ if __name__ == '__main__':
     # get_pretrain_model_parameters()
     # get_finetune_model_parameters()
     # inference_test('平安医保科技')
-    result = inference('一曲长歌一悠回')
+    result = inference('糖化講境惹尘烟')
     print(result)

@@ -67,9 +67,8 @@ if __name__ == '__main__':
 
                 # 累计数值
                 test_count += input_len
-                for i, label in enumerate(label_list):
-                    if i == input_len:
-                        break
+                for i in range(input_len):
+                    label = label_list[i + 1]
                     if label in output_topk[i]:
                         test_acc += 1
             if test_count:
