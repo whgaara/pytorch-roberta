@@ -120,6 +120,7 @@ def inference(text):
         correct = {}
         correct['原字'] = ori
         candidate = candidates[i]
+        confidence = probs[i]
         print('原字：%s；候选字：%s' % (ori, candidate))
         if ori in candidate:
             correct_sentence.append(ori)
@@ -127,11 +128,15 @@ def inference(text):
         else:
             max_can = ''
             max_sim = 0
+            max_conf = 0
             for j, can in enumerate(candidate):
                 similarity = char_func.similarity(ori, can)
                 if similarity > max_sim:
                     max_can = can
-            if max_sim > 0.5:
+                    max_sim = similarity
+                    max_conf = confidence[i]
+            # if max_sim > 0.5:
+            if curve(max_conf, max_sim):
                 correct['新字'] = max_can
                 correct['相似度'] = max_sim
                 result['纠正数据'].append(correct)
