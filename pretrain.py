@@ -52,7 +52,6 @@ if __name__ == '__main__':
         # test
         with torch.no_grad():
             roberta.eval()
-
             test_count = 0
             test_acc = 0
             for test_data in testset:

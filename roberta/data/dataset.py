@@ -67,11 +67,11 @@ class RobertaTrainingData(object):
 
         # 每个实例的最大长度为512，因此对一个段落进行裁剪
         # 510 = 512 - 2，给cls和sep留的位置
-        for i in range(math.ceil(len(total_ids)/510)):
+        for i in range(math.ceil(len(total_ids)/(SentenceLength - 2))):
             tmp_ids = [self.token_cls_id]
             tmp_masks = [self.token_pad_id]
-            tmp_ids.extend(total_ids[i*510: min((i+1)*510, len(total_ids))])
-            tmp_masks.extend(total_masks[i*510: min((i+1)*510, len(total_masks))])
+            tmp_ids.extend(total_ids[i*(SentenceLength - 2): min((i+1)*(SentenceLength - 2), len(total_ids))])
+            tmp_masks.extend(total_masks[i*(SentenceLength - 2): min((i+1)*(SentenceLength - 2), len(total_masks))])
             # 不足512的使用padding补全
             diff = SentenceLength - len(tmp_ids)
             if diff == 1:
@@ -205,12 +205,12 @@ class RobertaTestSet(Dataset):
     def __gen_token(self, tokens):
         tar_token_ids = [101]
         tokens = list(tokens)
-        tokens = tokens[:510]
+        tokens = tokens[:(SentenceLength - 2)]
         for token in tokens:
             token_id = self.tokenizer.token_to_id(token)
             tar_token_ids.append(token_id)
         tar_token_ids.append(102)
-        if len(tar_token_ids) < 512:
-            for i in range(512 - len(tar_token_ids)):
+        if len(tar_token_ids) < SentenceLength:
+            for i in range(SentenceLength - len(tar_token_ids)):
                 tar_token_ids.append(0)
         return tar_token_ids
