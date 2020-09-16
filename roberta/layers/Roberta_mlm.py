@@ -7,7 +7,7 @@ from roberta.layers.RobertaEmbeddings import RobertaEmbeddings
 from roberta.layers.Mlm import Mlm
 
 
-class Roberta(nn.Module):
+class RobertaMlm(nn.Module):
     def __init__(self,
                  vocab_size=VocabSize,
                  hidden=HiddenSize,
@@ -17,7 +17,7 @@ class Roberta(nn.Module):
                  dropout_prob=DropOut,
                  intermediate_size=IntermediateSize
                  ):
-        super(Roberta, self).__init__()
+        super(RobertaMlm, self).__init__()
         self.vocab_size = vocab_size
         self.hidden_size = hidden
         self.max_len = max_len

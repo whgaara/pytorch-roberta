@@ -20,7 +20,7 @@ ModelClass = 'Bert'
 if ModelClass == 'Bert':
     RepeatNum = 1
     SentenceLength = 128
-if ModelClass == 'Roberta':
+if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     SentenceLength = 512
 

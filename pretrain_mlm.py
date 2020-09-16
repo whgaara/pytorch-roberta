@@ -6,11 +6,11 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from roberta.data.dataset import *
-from roberta.layers.Roberta_mlm import Roberta
+from roberta.layers.Roberta_mlm import RobertaMlm
 
 
 if __name__ == '__main__':
-    roberta = Roberta().to(device)
+    roberta = RobertaMlm().to(device)
     print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
 
     if SentenceLength == 512:

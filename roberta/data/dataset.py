@@ -127,7 +127,7 @@ class RobertaDataSet(Dataset):
                 texts_ids = self.roberta_data.texts_to_ids(texts)
                 self.src_lines.append(texts_ids)
         for line in self.src_lines:
-            if ModelClass == 'Roberta':
+            if ModelClass == 'RobertaMlm':
                 instances = self.roberta_data.ids_to_mask(line)
             else:
                 instances = self.roberta_data.ids_all_mask(line)
@@ -135,7 +135,7 @@ class RobertaDataSet(Dataset):
                 self.tar_lines.append(instance)
 
     def __get_texts(self, mode=ModelClass):
-        if mode == 'Roberta':
+        if mode == 'RobertaMlm':
             filenames = glob.glob('%s/*.txt' % self.corpus_path)
             np.random.shuffle(filenames)
             count, texts = 0, []
