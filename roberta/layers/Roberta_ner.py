@@ -78,12 +78,6 @@ class Roberta(nn.Module):
                 target = local2target_transformer[key] % i
                 new_parameter_dict[local] = pretrain_model_dict[target]
 
-        # 加载mlm层参数
-        for key in local2target_mlm:
-            local = key
-            target = local2target_mlm[key]
-            new_parameter_dict[local] = pretrain_model_dict[target]
-
         finetune_model_dict.update(new_parameter_dict)
         self.load_state_dict(finetune_model_dict)
 

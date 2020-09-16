@@ -145,6 +145,8 @@ def inference(text, mode='p'):
                 else:
                     correct_sentence.append(ori)
             else:
+                correct['新字'] = candidate[0]
+                result['纠正数据'].append(correct)
                 correct_sentence.append(candidate[0])
 
     result['纠正'] = ''.join(correct_sentence)

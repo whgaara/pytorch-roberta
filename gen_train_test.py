@@ -30,6 +30,7 @@ def gen_train_test():
                 rad = random.randint(0, 10)
                 if rad < 1:
                     f_test.write(line + '-***-' + random_wrong(line) + '\n')
+                    f_train.write(line + '\n')
                 else:
                     f_train.write(line + '\n')
 
