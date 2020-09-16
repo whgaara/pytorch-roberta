@@ -154,8 +154,11 @@ def inference(text, mode='p'):
 
 
 if __name__ == '__main__':
-    # get_pretrain_model_parameters()
-    # get_finetune_model_parameters()
-    # inference_test('平安医保科技')
-    result = inference('鱼顽龙门触天霞', 's')
-    print(result)
+    while True:
+        text = input()
+        if text:
+            # get_pretrain_model_parameters()
+            # get_finetune_model_parameters()
+            # inference_test('平安医保科技')
+            result = inference(text, 's')
+            print(result)
