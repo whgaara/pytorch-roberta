@@ -9,7 +9,7 @@ SourcePath = 'data/src_data'
 CorpusPath = 'data/train_data'
 TestPath = 'data/test_data/test.txt'
 VocabPath = 'checkpoint/pretrain/vocab.txt'
-FinetunePath = 'checkpoint/finetune/roberta_trained.model'
+FinetunePath = 'checkpoint/finetune/roberta_trained.model.ep3'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 

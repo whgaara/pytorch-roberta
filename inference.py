@@ -45,7 +45,7 @@ def get_id_from_text(text):
 
 
 def get_finetune_model_parameters():
-    model = torch.load('checkpoint/finetune/roberta_trained.model')
+    model = torch.load('checkpoint/finetune/roberta_trained.model.ep3')
     layers = model.state_dict().keys()
     for layer in layers:
         print(layer)
@@ -120,7 +120,7 @@ def inference_single(text, model, mode='p'):
         correct['原字'] = ori
         candidate = candidates[i]
         confidence = probs[i]
-        print('原字：%s；候选字：%s' % (ori, candidate))
+        # print('原字：%s；候选字：%s' % (ori, candidate))
         if ori in candidate:
             correct_sentence.append(ori)
             continue
@@ -165,6 +165,7 @@ def inference_batch(file_path, mode='p'):
             line = line.split('-***-')
             src = line[0]
             target = line[1]
+            print(src, target)
             result = inference_single(target, model, 's')
             if src == result['纠正']:
                 acc += 1
