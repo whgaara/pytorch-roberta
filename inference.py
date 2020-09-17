@@ -76,10 +76,9 @@ def inference_test(text):
             print(word, num, output_tensor[0][index][num].item())
 
 
-def get_topk(text):
+def get_topk(text, model):
     input_len = len(text)
     text2id, segments, roberta_data = get_id_from_text(text)
-    model = torch.load(FinetunePath).to(device)
     model.eval()
     with torch.no_grad():
         result = []
@@ -104,9 +103,9 @@ def curve(confidence, similarity):
     return False
 
 
-def inference(text, mode='p'):
+def inference_single(text, model, mode='p'):
     char_func = CharFuncs(PronunciationPath)
-    candidates, probs = get_topk(text)
+    candidates, probs = get_topk(text, model)
     text_list = list(text)
     correct_sentence = []
     result = {
@@ -153,12 +152,32 @@ def inference(text, mode='p'):
     return result
 
 
+def inference_batch(file_path, mode='p'):
+    f = open(file_path, 'r', encoding='utf-8')
+    model = torch.load(FinetunePath).to(device)
+    print('加载模型完成！')
+    count = 0
+    acc = 0
+    for line in f:
+        if line:
+            line = line.strip()
+            count += 1
+            line = line.split('-***-')
+            src = line[0]
+            target = line[1]
+            result = inference_single(target, model, 's')
+            if src == result['纠正']:
+                acc += 1
+    print('正确个数：%s，总共个数：%s，正确率：%s' % (acc, count, round(float(acc)/float(count), 2)))
+
+
 if __name__ == '__main__':
-    while True:
-        text = input()
-        if text:
+    inference_batch('data/test_data/test.txt')
+    # while True:
+    #     text = input()
+    #     if text:
             # get_pretrain_model_parameters()
             # get_finetune_model_parameters()
             # inference_test('平安医保科技')
-            result = inference(text, 's')
-            print(result)
+            # result = inference_single(text, 's')
+            # print(result)
