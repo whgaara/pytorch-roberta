@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 
 import torch.nn as nn
 
@@ -10,8 +10,11 @@ from roberta.layers.Roberta_mlm import RobertaMlm
 
 
 if __name__ == '__main__':
+    if Debug:
+        print('开始训练 %s' % get_time())
     roberta = RobertaMlm().to(device)
-    print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
+    if Debug:
+        print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
 
     if SentenceLength == 512:
         roberta.load_pretrain()
@@ -25,6 +28,8 @@ if __name__ == '__main__':
 
     for epoch in range(Epochs):
         # train
+        if Debug:
+            print('第%s个Epoch %s' % (epoch, get_time()))
         roberta.train()
         data_iter = tqdm(enumerate(dataloader),
                          desc='EP_%s:%d' % ('train', epoch),
@@ -32,16 +37,25 @@ if __name__ == '__main__':
                          bar_format='{l_bar}{r_bar}')
         print_loss = 0.0
         for i, data in data_iter:
+            if Debug:
+                print('生成数据 %s' % get_time())
             data = {k: v.to(device) for k, v in data.items()}
             input_token = data['input_token_ids']
             segment_ids = data['segment_ids']
             label = data['token_ids_labels']
+            if Debug:
+                print('获取数据 %s' % get_time())
             mlm_output = roberta(input_token, segment_ids).permute(0, 2, 1)
+            if Debug:
+                print('完成前向 %s' % get_time())
             mask_loss = criterion(mlm_output, label)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()
             optim.step()
+            if Debug:
+                print('完成反向 %s\n' % get_time())
+
         print('EP_%d mask loss:%s' % (epoch, print_loss))
 
         # save

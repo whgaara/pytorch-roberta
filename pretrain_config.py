@@ -1,3 +1,4 @@
+import time
 import torch
 
 cuda_condition = torch.cuda.is_available()
@@ -13,6 +14,9 @@ FinetunePath = 'checkpoint/finetune/roberta_trained.model.ep3'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
+# Debug开关
+Debug = True
+
 # 任务模式
 ModelClass = 'Bert'
 
@@ -27,12 +31,12 @@ if ModelClass == 'RobertaMlm':
 Epochs = 8
 DropOut = 0.1
 MaskRate = 0.15
-BatchSize = 4
+BatchSize = 16
 VocabSize = 21128
 HiddenSize = 768
 LearningRate = 1e-3
 # transformer块个数
-HiddenLayerNum = 8
+HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12
 
@@ -63,3 +67,7 @@ local2target_transformer = {
     'transformer_blocks.%s.feedforward_layernorm.weight': 'bert.encoder.layer.%s.output.LayerNorm.weight',
     'transformer_blocks.%s.feedforward_layernorm.bias': 'bert.encoder.layer.%s.output.LayerNorm.bias',
 }
+
+
+def get_time():
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

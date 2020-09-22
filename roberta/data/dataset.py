@@ -172,11 +172,12 @@ class RobertaDataSet(Dataset):
         is_masked = [1 if x else 0 for x in mask_ids]
         input_token_ids = self.__gen_input_token(token_ids, mask_ids)
         segment_ids = [1 if x else 0 for x in token_ids]
-        onehot_labels = self.__id_to_onehot(token_ids)
+        # onehot生成非常耗时，暂时注释，需要时可使用
+        # onehot_labels = self.__id_to_onehot(token_ids)
 
         output['input_token_ids'] = input_token_ids
         output['token_ids_labels'] = token_ids
-        output['onehot_labels'] = onehot_labels
+        # output['onehot_labels'] = onehot_labels
         output['is_masked'] = is_masked
         output['segment_ids'] = segment_ids
 

@@ -85,12 +85,20 @@ class RobertaMlm(nn.Module):
 
     def forward(self, input_token, segment_ids):
         # embedding
+        if Debug:
+            print('获取embedding %s' % get_time())
         embedding_x = self.roberta_emd(input_token, segment_ids)
+        if Debug:
+            print('获取attention_mask %s' % get_time())
         attention_mask = self.gen_attention_masks(segment_ids).to(device)
         feedforward_x = None
         # transformer
         for i in range(self.num_hidden_layers):
+            if Debug:
+                print('获取第%s个transformer-block %s' % (i, get_time()))
             feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
         # mlm
+        if Debug:
+            print('进行mlm全连接 %s' % get_time())
         output = self.mlm(feedforward_x)
         return output
