@@ -166,10 +166,11 @@ class Inference(object):
                 line = line.split('-***-')
                 src = line[0]
                 target = line[1]
-                # print(src, target)
                 result = self.inference_single(target, src)
                 if src == result['纠正']:
                     self.sen_acc += 1
+                else:
+                    print(src, result['纠正'])
         print('句子正确个数：%s，句子总共个数：%s，句子正确率：%s' %
               (self.sen_acc, self.sen_count, round(float(self.sen_acc) / float(self.sen_count), 2)))
         print('top1正确个数：%s，top1总共个数：%s，top1正确率：%s' %
