@@ -10,12 +10,12 @@ SourcePath = 'data/src_data'
 CorpusPath = 'data/train_data'
 TestPath = 'data/test_data/test.txt'
 VocabPath = 'checkpoint/pretrain/vocab.txt'
-FinetunePath = 'checkpoint/finetune/roberta_trained.model.ep3'
+FinetunePath = 'checkpoint/finetune/roberta_trained.model'
 PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
 # Debug开关
-Debug = True
+Debug = False
 
 # 任务模式
 ModelClass = 'Bert'

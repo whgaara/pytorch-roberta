@@ -68,7 +68,8 @@ if __name__ == '__main__':
         with torch.no_grad():
             roberta.eval()
             test_count = 0
-            test_acc = 0
+            top1_count = 0
+            top5_count = 0
             for test_data in testset:
                 input_token = test_data['input_token_ids'].unsqueeze(0).to(device)
                 segment_ids = test_data['segment_ids'].unsqueeze(0).to(device)
@@ -83,9 +84,15 @@ if __name__ == '__main__':
                 test_count += input_len
                 for i in range(input_len):
                     label = label_list[i + 1]
+                    if label == output_topk[i][0]:
+                        top1_count += 1
                     if label in output_topk[i]:
-                        test_acc += 1
+                        top5_count += 1
+
             if test_count:
-                acc = float(test_acc) / float(test_count)
-                acc = round(acc, 2)
-                print('纠正正确率：%s\n' % acc)
+                top1_acc = float(top1_count) / float(test_count)
+                acc = round(top1_acc, 2)
+                print('top1纠正正确率：%s\n' % acc)
+                top5_acc = float(top5_count) / float(test_count)
+                acc = round(top5_acc, 2)
+                print('top5纠正正确率：%s\n' % acc)
