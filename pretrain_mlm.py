@@ -92,7 +92,7 @@ if __name__ == '__main__':
             if test_count:
                 top1_acc = float(top1_count) / float(test_count)
                 acc = round(top1_acc, 2)
-                print('top1纠正正确率：%s\n' % acc)
+                print('top1纠正正确率：%s' % acc)
                 top5_acc = float(top5_count) / float(test_count)
                 acc = round(top5_acc, 2)
                 print('top5纠正正确率：%s\n' % acc)
