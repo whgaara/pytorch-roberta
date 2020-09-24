@@ -1,6 +1,6 @@
 # coding: utf-8
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '3'
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import torch
 
 from tqdm import tqdm
