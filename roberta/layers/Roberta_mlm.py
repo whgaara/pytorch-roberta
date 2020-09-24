@@ -83,11 +83,11 @@ class RobertaMlm(nn.Module):
         finetune_model_dict.update(new_parameter_dict)
         self.load_state_dict(finetune_model_dict)
 
-    def forward(self, input_token, segment_ids, position_ids):
+    def forward(self, input_token, segment_ids):
         # embedding
         if Debug:
             print('获取embedding %s' % get_time())
-        embedding_x = self.roberta_emd(input_token, segment_ids, position_ids)
+        embedding_x = self.roberta_emd(input_token, segment_ids)
         if Debug:
             print('获取attention_mask %s' % get_time())
         attention_mask = self.gen_attention_masks(segment_ids).to(device)
