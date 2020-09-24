@@ -26,6 +26,13 @@ if __name__ == '__main__':
     optim = Adam(roberta.parameters(), lr=LearningRate)
     criterion = nn.CrossEntropyLoss().to(device)
 
+    # 生成固定位置信息
+    position_ids = []
+    for i in range(BatchSize):
+        tmp = [x for x in range(SentenceLength)]
+        position_ids.append(tmp)
+    position_ids = torch.tensor(position_ids)
+
     for epoch in range(Epochs):
         # train
         if Debug:
@@ -45,7 +52,7 @@ if __name__ == '__main__':
             label = data['token_ids_labels']
             if Debug:
                 print('获取数据 %s' % get_time())
-            mlm_output = roberta(input_token, segment_ids).permute(0, 2, 1)
+            mlm_output = roberta(input_token, segment_ids, position_ids).permute(0, 2, 1)
             if Debug:
                 print('完成前向 %s' % get_time())
             mask_loss = criterion(mlm_output, label)

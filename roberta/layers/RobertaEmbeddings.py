@@ -10,10 +10,11 @@ class RobertaEmbeddings(nn.Module):
         self.emb_normalization = nn.LayerNorm(hidden_size)
         self.emb_dropout = nn.Dropout(p=dropout_prob)
 
-    def forward(self, input_token, segment_ids):
+    def forward(self, input_token, segment_ids, position_ids):
         token_embeddings = self.token_embeddings(input_token)
         type_embeddings = self.type_embeddings(segment_ids)
-        postion_embeddings = self.position_embeddings.weight
+        # postion_embeddings = self.position_embeddings.weight
+        postion_embeddings = self.position_embeddings(position_ids)
         embedding_x = token_embeddings + type_embeddings + postion_embeddings
         embedding_x = self.emb_normalization(embedding_x)
         embedding_x = self.emb_dropout(embedding_x)
