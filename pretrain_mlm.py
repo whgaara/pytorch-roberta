@@ -31,7 +31,7 @@ if __name__ == '__main__':
     for i in range(BatchSize):
         tmp = [x for x in range(SentenceLength)]
         position_ids.append(tmp)
-    position_ids = torch.tensor(position_ids)
+    position_ids = torch.tensor(position_ids).to(device)
 
     for epoch in range(Epochs):
         # train
