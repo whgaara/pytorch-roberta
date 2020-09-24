@@ -34,7 +34,7 @@ MaskRate = 0.15
 BatchSize = 16
 VocabSize = 21128
 HiddenSize = 768
-LearningRate = 1e-3
+LearningRate = 5e-5
 # transformer块个数
 HiddenLayerNum = 12
 IntermediateSize = 3072
