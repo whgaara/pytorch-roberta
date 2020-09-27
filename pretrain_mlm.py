@@ -18,7 +18,9 @@ if __name__ == '__main__':
         print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
 
     if SentenceLength == 512:
+        print('开始加载预训练模型！')
         roberta.load_pretrain()
+        print('完成加载预训练模型！')
 
     dataset = RobertaDataSet(CorpusPath, onehot_type)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)

@@ -44,6 +44,7 @@ class Inference(object):
         self.model = torch.load(FinetunePath).to(device)
         self.char_func = CharFuncs(PronunciationPath)
         self.roberta_data = RobertaTrainingData()
+        print('加载模型完成！')
 
     def get_id_from_text(self, text):
         assert isinstance(text, str)
@@ -158,7 +159,6 @@ class Inference(object):
 
     def inference_batch(self, file_path):
         f = open(file_path, 'r', encoding='utf-8')
-        print('加载模型完成！')
         for line in tqdm(f):
             if line:
                 line = line.strip()
