@@ -15,8 +15,9 @@ class MyLoss(nn.Module):
 
     def forward(self, x, y):
         z = x * y
-        z = torch.sum(torch.sum(z, dim=-1)).item()
-        return torch.tensor((1.0 - z) / BatchSize)
+        z = torch.tensor(1.0).to(device) - torch.sum(z, dim=-1)
+        z = torch.mean(torch.sum(z, dim=-1))
+        return z
 
 
 if __name__ == '__main__':
