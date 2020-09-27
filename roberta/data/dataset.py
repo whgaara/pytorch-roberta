@@ -1,5 +1,6 @@
 import glob
 import math
+import copy
 import pkuseg
 import numpy as np
 
@@ -169,15 +170,22 @@ class RobertaDataSet(Dataset):
         instance = self.tar_lines[item]
         token_ids = instance[0]
         mask_ids = instance[1]
-        is_masked = [1 if x else 0 for x in mask_ids]
+        # is_masked = [1 if x else 0 for x in mask_ids]
+        is_masked = []
+        for i, id in enumerate(mask_ids):
+            if id != 0:
+                is_masked.append(i)
         input_token_ids = self.__gen_input_token(token_ids, mask_ids)
         segment_ids = [1 if x else 0 for x in token_ids]
-        # onehot生成非常耗时，暂时注释，需要时可使用
+        # 全体onehot生成非常耗时，暂时注释，需要时可使用
         # onehot_labels = self.__id_to_onehot(token_ids)
+        # 只针对mask结果进行onehot
+
+
 
         output['input_token_ids'] = input_token_ids
         output['token_ids_labels'] = token_ids
-        # output['onehot_labels'] = onehot_labels
+        output['onehot_labels'] = onehot_labels
         output['is_masked'] = is_masked
         output['segment_ids'] = segment_ids
 
@@ -194,13 +202,17 @@ class RobertaDataSet(Dataset):
                 input_token_ids.append(mask)
         return input_token_ids
 
-    def __id_to_onehot(self, ids):
-        onehot = []
-        for id in ids:
-            tmp = [0.0 for i in range(VocabSize)]
-            tmp[id] = 1.0
-            onehot.append(tmp)
-        return onehot
+    def __id_to_onehot(self, token_ids):
+        onehot_labels = []
+        onehot_pad = [0] * VocabSize
+        onehot_pad[0] = 1
+        for i in token_ids:
+            tmp = [0 for j in range(VocabSize)]
+            if i == 0:
+                onehot_labels.append(onehot_pad)
+            else:
+                tmp[i] = 1
+                onehot_labels.append(tmp)
 
 
 class RobertaTestSet(Dataset):

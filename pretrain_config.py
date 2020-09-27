@@ -28,13 +28,13 @@ if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     SentenceLength = 512
 
-Epochs = 16
+Epochs = 64
 DropOut = 0.1
 MaskRate = 0.15
-BatchSize = 16
+BatchSize = 8
 VocabSize = 21128
 HiddenSize = 768
-LearningRate = 5e-4
+LearningRate = 1e-3
 # transformer块个数
 HiddenLayerNum = 12
 IntermediateSize = 3072
