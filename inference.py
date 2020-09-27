@@ -127,11 +127,11 @@ class Inference(object):
                 if gt[i] in candidate:
                     self.top5_acc += 1
 
-            if ori in candidate:
-                correct_sentence.append(ori)
-                continue
-            else:
-                if self.mode == 'p':
+            if self.mode == 'p':
+                if ori in candidate:
+                    correct_sentence.append(ori)
+                    continue
+                else:
                     max_can = ''
                     max_sim = 0
                     max_conf = 0
@@ -149,11 +149,12 @@ class Inference(object):
                         correct_sentence.append(max_can)
                     else:
                         correct_sentence.append(ori)
-                else:
-                    correct['新字'] = candidate[0]
-                    correct['置信度'] = confidence
-                    result['纠正数据'].append(correct)
-                    correct_sentence.append(candidate[0])
+            else:
+                correct['新字'] = candidate[0]
+                correct['候选字'] = candidate
+                correct['置信度'] = confidence
+                result['纠正数据'].append(correct)
+                correct_sentence.append(candidate[0])
 
         result['纠正'] = ''.join(correct_sentence)
         return result
