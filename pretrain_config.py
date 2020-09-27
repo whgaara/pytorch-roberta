@@ -23,7 +23,7 @@ ModelClass = 'Bert'
 # ## 训练参数 ## #
 if ModelClass == 'Bert':
     RepeatNum = 1
-    BatchSize = 8
+    BatchSize = 16
     SentenceLength = 128
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
