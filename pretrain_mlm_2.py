@@ -15,9 +15,7 @@ class MyLoss(nn.Module):
         super().__init__()
 
     def forward(self, x, y):
-        x_var = Variable(x, requires_grad=True)
-        y_var = Variable(y, requires_grad=True)
-        z = x_var * y_var
+        z = x * y
         z = torch.tensor(1.0).to(device) - torch.sum(z, dim=-1)
         z = torch.mean(torch.sum(z, dim=-1))
         return z
@@ -63,6 +61,7 @@ if __name__ == '__main__':
             if Debug:
                 print('获取数据 %s' % get_time())
             mlm_output = nn.Softmax(dim=-1)(roberta(input_token, segment_ids))
+
             # 获取mask字段的输出
             masked_mlm_output = []
             for batch, num in enumerate(is_masked):
@@ -70,6 +69,8 @@ if __name__ == '__main__':
                 masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
             masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
             masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
+            masked_mlm_output = mlm_output.index_select(dim=1, index=is_masked)
+
 
             if Debug:
                 print('完成前向 %s' % get_time())
