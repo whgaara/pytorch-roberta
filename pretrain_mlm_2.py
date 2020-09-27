@@ -4,6 +4,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import torch.nn as nn
 
 from torch.optim import Adam
+from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from roberta.data.dataset import *
 from roberta.layers.Roberta_mlm import RobertaMlm
@@ -14,7 +15,9 @@ class MyLoss(nn.Module):
         super().__init__()
 
     def forward(self, x, y):
-        z = x * y
+        x_var = Variable(x, requires_grad=True)
+        y_var = Variable(y, requires_grad=True)
+        z = x_var * y_var
         z = torch.tensor(1.0).to(device) - torch.sum(z, dim=-1)
         z = torch.mean(torch.sum(z, dim=-1))
         return z
