@@ -151,6 +151,7 @@ class Inference(object):
                         correct_sentence.append(ori)
                 else:
                     correct['新字'] = candidate[0]
+                    correct['置信度'] = confidence
                     result['纠正数据'].append(correct)
                     correct_sentence.append(candidate[0])
 
