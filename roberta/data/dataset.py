@@ -180,8 +180,7 @@ class RobertaDataSet(Dataset):
         # 全体onehot生成非常耗时，暂时注释，需要时可使用
         # onehot_labels = self.__id_to_onehot(token_ids)
         # 只针对mask结果进行onehot
-
-
+        onehot_labels = self.__maskid_to_onehot(token_ids, is_masked)
 
         output['input_token_ids'] = input_token_ids
         output['token_ids_labels'] = token_ids
@@ -213,6 +212,15 @@ class RobertaDataSet(Dataset):
             else:
                 tmp[i] = 1
                 onehot_labels.append(tmp)
+        return onehot_labels
+
+    def __maskid_to_onehot(self, token_ids, is_masked):
+        onehot_masked_labels = []
+        for i in is_masked:
+            onehot_labels = [0] * VocabSize
+            onehot_labels[token_ids[i]] = 1
+            onehot_masked_labels.append(onehot_labels)
+        return onehot_masked_labels
 
 
 class RobertaTestSet(Dataset):

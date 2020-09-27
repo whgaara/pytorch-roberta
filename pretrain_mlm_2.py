@@ -9,6 +9,16 @@ from roberta.data.dataset import *
 from roberta.layers.Roberta_mlm import RobertaMlm
 
 
+class MyLoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x, y):
+        z = x * y
+        z = torch.sum(torch.sum(z, dim=-1)).item()
+        return torch.tensor((1.0 - z) / BatchSize)
+
+
 if __name__ == '__main__':
     if Debug:
         print('开始训练 %s' % get_time())
@@ -24,7 +34,8 @@ if __name__ == '__main__':
     testset = RobertaTestSet(TestPath)
 
     optim = Adam(roberta.parameters(), lr=LearningRate)
-    criterion = nn.L1Loss(reduction='sum').to(device)
+    # criterion = nn.L1Loss(reduction='sum').to(device)
+    criterion = MyLoss().to(device)
 
     for epoch in range(Epochs):
         # train
@@ -42,15 +53,24 @@ if __name__ == '__main__':
             data = {k: v.to(device) for k, v in data.items()}
             input_token = data['input_token_ids']
             segment_ids = data['segment_ids']
+            is_masked = data['is_masked']
             label = data['token_ids_labels']
             onehot_labels = data['onehot_labels'].float()
             if Debug:
                 print('获取数据 %s' % get_time())
             mlm_output = nn.Softmax(dim=-1)(roberta(input_token, segment_ids))
+            # 获取mask字段的输出
+            masked_mlm_output = []
+            for batch, num in enumerate(is_masked):
+                char_num = num.item()
+                masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
+            masked_mlm_output = torch.tensor(masked_mlm_output)
+
             if Debug:
                 print('完成前向 %s' % get_time())
             # mask_loss = criterion(mlm_output, label)
-            mask_loss = criterion(mlm_output, onehot_labels)
+            # mask_loss = criterion(mlm_output, onehot_labels)
+            mask_loss = criterion(masked_mlm_output, onehot_labels)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()
