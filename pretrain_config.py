@@ -18,7 +18,7 @@ PronunciationPath = 'data/char_meta.txt'
 Debug = False
 
 # 任务模式
-ModelClass = 'RobertaMlm'
+ModelClass = 'Bert'
 
 # ## 训练参数 ## #
 if ModelClass == 'Bert':
