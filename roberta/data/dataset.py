@@ -178,9 +178,9 @@ class RobertaDataSet(Dataset):
         input_token_ids = self.__gen_input_token(token_ids, mask_ids)
         segment_ids = [1 if x else 0 for x in token_ids]
         # 全体onehot生成非常耗时，暂时注释，需要时可使用
-        # onehot_labels = self.__id_to_onehot(token_ids)
+        onehot_labels = self.__id_to_onehot(token_ids)
         # 只针对mask结果进行onehot
-        onehot_labels = self.__maskid_to_onehot(token_ids, is_masked)
+        # onehot_labels = self.__maskid_to_onehot(token_ids, is_masked)
 
         output['input_token_ids'] = input_token_ids
         output['token_ids_labels'] = token_ids

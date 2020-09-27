@@ -16,6 +16,7 @@ class MyLoss(nn.Module):
 
     def forward(self, x, y):
         z = x * y
+        # z = torch.sum(z, dim=-1)
         z = torch.tensor(1.0).to(device) - torch.sum(z, dim=-1)
         z = torch.mean(torch.sum(z, dim=-1))
         return z
@@ -63,20 +64,20 @@ if __name__ == '__main__':
             mlm_output = nn.Softmax(dim=-1)(roberta(input_token, segment_ids))
 
             # 获取mask字段的输出
-            masked_mlm_output = []
-            for batch, num in enumerate(is_masked):
-                char_num = num.item()
-                masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
-            masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
-            masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
+            # masked_mlm_output = []
+            # for batch, num in enumerate(is_masked):
+            #     char_num = num.item()
+            #     masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
+            # masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
+            # masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
             # masked_mlm_output = mlm_output.index_select(dim=1, index=is_masked)
 
 
             if Debug:
                 print('完成前向 %s' % get_time())
             # mask_loss = criterion(mlm_output, label)
-            # mask_loss = criterion(mlm_output, onehot_labels)
-            mask_loss = criterion(masked_mlm_output, onehot_labels)
+            mask_loss = criterion(mlm_output, onehot_labels)
+            # mask_loss = criterion(masked_mlm_output, onehot_labels)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()
