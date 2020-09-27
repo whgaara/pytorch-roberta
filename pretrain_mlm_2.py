@@ -55,7 +55,7 @@ if __name__ == '__main__':
             segment_ids = data['segment_ids']
             is_masked = data['is_masked']
             label = data['token_ids_labels']
-            onehot_labels = data['onehot_labels'].float()
+            onehot_labels = data['onehot_labels'].float().to(device)
             if Debug:
                 print('获取数据 %s' % get_time())
             mlm_output = nn.Softmax(dim=-1)(roberta(input_token, segment_ids))
@@ -64,7 +64,7 @@ if __name__ == '__main__':
             for batch, num in enumerate(is_masked):
                 char_num = num.item()
                 masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
-            masked_mlm_output = torch.tensor(masked_mlm_output)
+            masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
 
             if Debug:
                 print('完成前向 %s' % get_time())
