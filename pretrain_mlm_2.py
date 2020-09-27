@@ -74,8 +74,8 @@ if __name__ == '__main__':
             if Debug:
                 print('完成前向 %s' % get_time())
             # mask_loss = criterion(mlm_output, label)
-            mask_loss = criterion(mlm_output, onehot_labels)
-            # mask_loss = criterion(masked_mlm_output, onehot_labels)
+            # mask_loss = criterion(mlm_output, onehot_labels)
+            mask_loss = criterion(masked_mlm_output, onehot_labels)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()
