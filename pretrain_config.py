@@ -18,20 +18,21 @@ PronunciationPath = 'data/char_meta.txt'
 Debug = False
 
 # 任务模式
-ModelClass = 'Bert'
+ModelClass = 'RobertaMlm'
 
 # ## 训练参数 ## #
 if ModelClass == 'Bert':
     RepeatNum = 1
+    BatchSize = 8
     SentenceLength = 128
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
+    BatchSize = 1
     SentenceLength = 512
 
 Epochs = 16
 DropOut = 0.1
 MaskRate = 0.15
-BatchSize = 8
 VocabSize = 21128
 HiddenSize = 768
 LearningRate = 5e-4

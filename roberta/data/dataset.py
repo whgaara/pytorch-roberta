@@ -118,8 +118,9 @@ class RobertaTrainingData(object):
 
 
 class RobertaDataSet(Dataset):
-    def __init__(self, corpus_path):
+    def __init__(self, corpus_path, onehot_type=False):
         self.corpus_path = corpus_path
+        self.onehot_type = onehot_type
         self.roberta_data = RobertaTrainingData()
         self.src_lines = []
         self.tar_lines = []
@@ -177,14 +178,16 @@ class RobertaDataSet(Dataset):
                 is_masked.append(i)
         input_token_ids = self.__gen_input_token(token_ids, mask_ids)
         segment_ids = [1 if x else 0 for x in token_ids]
-        # 全体onehot生成非常耗时，暂时注释，需要时可使用
-        onehot_labels = self.__id_to_onehot(token_ids)
-        # 只针对mask结果进行onehot
-        # onehot_labels = self.__maskid_to_onehot(token_ids, is_masked)
+        if self.onehot_type:
+            # 全体onehot生成非常耗时，暂时注释，需要时可使用
+            onehot_labels = self.__id_to_onehot(token_ids)
+            # 只针对mask结果进行onehot
+            mask_onehot_labels = self.__maskid_to_onehot(token_ids, is_masked)
+            output['onehot_labels'] = onehot_labels
+            output['mask_onehot_labels'] = mask_onehot_labels
 
         output['input_token_ids'] = input_token_ids
         output['token_ids_labels'] = token_ids
-        output['onehot_labels'] = onehot_labels
         output['is_masked'] = is_masked
         output['segment_ids'] = segment_ids
 

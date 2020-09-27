@@ -12,6 +12,7 @@ from roberta.layers.Roberta_mlm import RobertaMlm
 if __name__ == '__main__':
     if Debug:
         print('开始训练 %s' % get_time())
+    onehot_type = False
     roberta = RobertaMlm().to(device)
     if Debug:
         print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
@@ -19,7 +20,7 @@ if __name__ == '__main__':
     if SentenceLength == 512:
         roberta.load_pretrain()
 
-    dataset = RobertaDataSet(CorpusPath)
+    dataset = RobertaDataSet(CorpusPath, onehot_type)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
     testset = RobertaTestSet(TestPath)
 
