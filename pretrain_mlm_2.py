@@ -38,8 +38,8 @@ if __name__ == '__main__':
     testset = RobertaTestSet(TestPath)
 
     optim = Adam(roberta.parameters(), lr=LearningRate)
-    criterion = nn.L1Loss(reduction='sum').to(device)
-    # criterion = MyLoss().to(device)
+    # criterion = nn.L1Loss(reduction='sum').to(device)
+    criterion = MyLoss().to(device)
 
     for epoch in range(Epochs):
         # train
@@ -69,12 +69,13 @@ if __name__ == '__main__':
                 char_num = num.item()
                 masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
             masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
+            masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
 
             if Debug:
                 print('完成前向 %s' % get_time())
             # mask_loss = criterion(mlm_output, label)
-            # mask_loss = criterion(mlm_output, onehot_labels)
-            mask_loss = criterion(masked_mlm_output, onehot_labels)
+            mask_loss = criterion(mlm_output, onehot_labels)
+            # mask_loss = criterion(masked_mlm_output, onehot_labels)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()
