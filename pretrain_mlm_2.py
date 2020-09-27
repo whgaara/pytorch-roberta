@@ -38,8 +38,8 @@ if __name__ == '__main__':
     testset = RobertaTestSet(TestPath)
 
     optim = Adam(roberta.parameters(), lr=LearningRate)
-    # criterion = nn.L1Loss(reduction='sum').to(device)
-    criterion = MyLoss().to(device)
+    criterion = nn.L1Loss(reduction='sum').to(device)
+    # criterion = MyLoss().to(device)
 
     for epoch in range(Epochs):
         # train
