@@ -69,7 +69,7 @@ if __name__ == '__main__':
                 masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
             masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
             masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
-            masked_mlm_output = mlm_output.index_select(dim=1, index=is_masked)
+            # masked_mlm_output = mlm_output.index_select(dim=1, index=is_masked)
 
 
             if Debug:
