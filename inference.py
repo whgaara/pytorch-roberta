@@ -40,6 +40,7 @@ class Inference(object):
         self.top5_acc = 0
         self.sen_count = 0
         self.sen_acc = 0
+        self.wrong_acc = 0
         self.mode = mode
         self.model = torch.load(FinetunePath).to(device)
         self.char_func = CharFuncs(PronunciationPath)
@@ -172,9 +173,13 @@ class Inference(object):
                 if src == result['纠正']:
                     self.sen_acc += 1
                 else:
+                    if target != result['纠正']:
+                        self.wrong_acc += 1
                     print(src, result['纠正'])
         print('句子正确个数：%s，句子总共个数：%s，句子正确率：%s' %
               (self.sen_acc, self.sen_count, round(float(self.sen_acc) / float(self.sen_count), 2)))
+        print('句子纠错个数：%s，句子总共个数：%s，句子纠错率：%s' %
+              (self.wrong_acc, self.sen_count, round(float(self.wrong_acc) / float(self.sen_count), 2)))
         print('top1正确个数：%s，top1总共个数：%s，top1正确率：%s' %
               (self.top1_acc, self.char_count, round(float(self.top1_acc) / float(self.char_count), 2)))
         print('top5正确个数：%s，top5总共个数：%s，top5正确率：%s' %
