@@ -111,7 +111,7 @@ class RobertaTrainingData(object):
 
         for i in range(1, input_length + 1):
             tmp_masks = [0] * SentenceLength
-            rand_num = np.random.randint(0, VocabSize)
+            rand_num = np.random.randint(107, 7993)
             tmp_masks[i] = rand_num
             instances.append([tmp_ids, tmp_masks])
         return instances
