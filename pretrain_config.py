@@ -37,6 +37,7 @@ VocabSize = 21128
 HiddenSize = 768
 LearningRate = 5e-4
 # transformer块个数
+WordGenTimes = 20
 HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12

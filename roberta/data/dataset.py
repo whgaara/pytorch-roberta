@@ -85,7 +85,7 @@ class RobertaTrainingData(object):
             instances.append([tmp_ids, tmp_masks])
         return instances
 
-    def ids_all_mask(self, texts_ids):
+    def ids_all_mask(self, texts_ids, tokenid2count):
         instances = []
         tmp_ids = [101]
 
@@ -110,6 +110,13 @@ class RobertaTrainingData(object):
                 tmp_ids.append(0)
 
         for i in range(1, input_length + 1):
+            # 如果某字出现次数很少，则强行增加训练集
+            if tokenid2count[i] < WordGenTimes:
+                for j in range(WordGenTimes - tokenid2count[i]):
+                    tmp_masks = [0] * SentenceLength
+                    rand_num = np.random.randint(672, 7992)
+                    tmp_masks[i] = rand_num
+                    instances.append([tmp_ids, tmp_masks])
             tmp_masks = [0] * SentenceLength
             rand_num = np.random.randint(672, 7992)
             tmp_masks[i] = rand_num
@@ -124,15 +131,30 @@ class RobertaDataSet(Dataset):
         self.roberta_data = RobertaTrainingData()
         self.src_lines = []
         self.tar_lines = []
+        self.tokenid_to_count = {}
         for i in range(RepeatNum):
             for texts in tqdm(self.__get_texts()):
                 texts_ids = self.roberta_data.texts_to_ids(texts)
                 self.src_lines.append(texts_ids)
+                # 收集词频
+                for tokenids in texts_ids:
+                    if isinstance(tokenids, list):
+                        for tokenid in tokenids:
+                            if tokenid in self.tokenid_to_count:
+                                self.tokenid_to_count[tokenid] += 1
+                            else:
+                                self.tokenid_to_count[tokenid] = 1
+                    else:
+                        tokenid = tokenids
+                        if tokenid in self.tokenid_to_count:
+                            self.tokenid_to_count[tokenid] += 1
+                        else:
+                            self.tokenid_to_count[tokenid] = 1
         for line in self.src_lines:
             if ModelClass == 'RobertaMlm':
                 instances = self.roberta_data.ids_to_mask(line)
             else:
-                instances = self.roberta_data.ids_all_mask(line)
+                instances = self.roberta_data.ids_all_mask(line, self.tokenid_to_count)
             for instance in instances:
                 self.tar_lines.append(instance)
 
