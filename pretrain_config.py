@@ -35,7 +35,7 @@ DropOut = 0.1
 MaskRate = 0.15
 VocabSize = 21128
 HiddenSize = 768
-LearningRate = 5e-4
+LearningRate = 1e-4
 # transformer块个数
 WordGenTimes = 20
 HiddenLayerNum = 12
