@@ -23,7 +23,7 @@ if __name__ == '__main__':
         print('完成加载预训练模型！')
 
     dataset = RobertaDataSet(CorpusPath, onehot_type)
-    dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
+    dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True, drop_last=True)
     testset = RobertaTestSet(TestPath)
 
     optim = Adam(roberta.parameters(), lr=LearningRate)
