@@ -111,7 +111,7 @@ class RobertaTrainingData(object):
 
         for i in range(1, input_length + 1):
             # 如果某字出现次数很少，则强行增加训练集
-            if tokenid2count[i] < WordGenTimes:
+            if tokenid2count[tmp_ids[i]] < WordGenTimes:
                 for j in range(WordGenTimes - tokenid2count[i]):
                     tmp_masks = [0] * SentenceLength
                     rand_num = np.random.randint(672, 7992)
