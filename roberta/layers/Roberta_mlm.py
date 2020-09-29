@@ -1,3 +1,4 @@
+import os
 import torch.nn as nn
 
 from pretrain_config import *
@@ -62,25 +63,27 @@ class RobertaMlm(nn.Module):
             attention_masks.append(attention_mask.tolist())
         return torch.tensor(attention_masks)
 
-    def load_pretrain(self, path=PretrainPath):
+    def load_pretrain(self, sen_length, path=PretrainPath):
         pretrain_model_dict = torch.load(path)
-        finetune_model_dict = self.state_dict()
-        new_parameter_dict = {}
 
-        # 加载embedding层参数
-        for key in local2target_emb:
-            local = key
-            target = local2target_emb[key]
-            new_parameter_dict[local] = pretrain_model_dict[target]
-
-        # 加载transformerblock层参数
-        for i in range(self.num_hidden_layers):
-            for key in local2target_transformer:
-                local = key % i
-                target = local2target_transformer[key] % i
+        if sen_length == 512:
+            finetune_model_dict = self.state_dict()
+            new_parameter_dict = {}
+            # 加载embedding层参数
+            for key in local2target_emb:
+                local = key
+                target = local2target_emb[key]
                 new_parameter_dict[local] = pretrain_model_dict[target]
+            # 加载transformerblock层参数
+            for i in range(self.num_hidden_layers):
+                for key in local2target_transformer:
+                    local = key % i
+                    target = local2target_transformer[key] % i
+                    new_parameter_dict[local] = pretrain_model_dict[target]
+            finetune_model_dict.update(new_parameter_dict)
+        else:
+            finetune_model_dict = pretrain_model_dict.state_dict()
 
-        finetune_model_dict.update(new_parameter_dict)
         self.load_state_dict(finetune_model_dict)
 
     def forward(self, input_token, segment_ids):
