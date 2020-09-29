@@ -16,10 +16,11 @@ PronunciationPath = 'data/char_meta.txt'
 # Debug开关
 Debug = False
 
+# 使用预训练模型开关
+UsePretrain = True
+
 # 任务模式
 ModelClass = 'Bert'
-
-UsePretrain = True
 
 # ## 训练参数 ## #
 if ModelClass == 'Bert':
