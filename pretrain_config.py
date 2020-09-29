@@ -19,6 +19,8 @@ Debug = False
 # 任务模式
 ModelClass = 'Bert'
 
+UsePretrain = True
+
 # ## 训练参数 ## #
 if ModelClass == 'Bert':
     RepeatNum = 1

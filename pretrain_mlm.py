@@ -17,14 +17,15 @@ if __name__ == '__main__':
     if Debug:
         print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
 
-    if SentenceLength == 512:
-        print('开始加载预训练模型！')
-        roberta.load_pretrain()
-        print('完成加载预训练模型！')
-    if SentenceLength == 128:
-        print('开始加载本地模型！')
-        roberta.load_pretrain()
-        print('完成加载本地模型！')
+    if UsePretrain:
+        if SentenceLength == 512:
+            print('开始加载预训练模型！')
+            roberta.load_pretrain()
+            print('完成加载预训练模型！')
+        if SentenceLength == 128:
+            print('开始加载本地模型！')
+            roberta.load_pretrain()
+            print('完成加载本地模型！')
 
     dataset = RobertaDataSet(CorpusPath, onehot_type)
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True, drop_last=True)
