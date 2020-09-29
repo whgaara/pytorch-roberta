@@ -11,7 +11,6 @@ CorpusPath = 'data/train_data'
 TestPath = 'data/test_data/test.txt'
 VocabPath = 'checkpoint/pretrain/vocab.txt'
 FinetunePath = 'checkpoint/finetune/roberta_trained.model'
-PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 PronunciationPath = 'data/char_meta.txt'
 
 # Debug开关
@@ -25,10 +24,12 @@ if ModelClass == 'Bert':
     RepeatNum = 1
     BatchSize = 16
     SentenceLength = 128
+    PretrainPath = 'checkpoint/finetune/roberta_trained.model'
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     BatchSize = 1
     SentenceLength = 512
+    PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
 
 Epochs = 16
 DropOut = 0.1
