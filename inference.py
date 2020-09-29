@@ -117,6 +117,9 @@ class Inference(object):
         for i, ori in enumerate(text_list):
             if ori == candidates[i][0]:
                 correct_sentence.append(ori)
+                self.top1_acc += 1
+                self.top5_acc += 1
+                self.char_count += 1
                 continue
             correct = {}
             correct['原字'] = ori
