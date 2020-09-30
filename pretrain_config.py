@@ -37,7 +37,7 @@ if ModelClass == 'RobertaMlm':
 Epochs = 16
 DropOut = 0.1
 MaskRate = 0.15
-VocabSize = 21128
+VocabSize = len(open(VocabPath, 'r', encoding='utf-8').readlines())
 HiddenSize = 768
 LearningRate = 1e-4
 # transformer块个数

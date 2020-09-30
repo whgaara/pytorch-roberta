@@ -6,6 +6,31 @@ from pretrain_config import *
 from roberta.common.tokenizers import Tokenizer
 
 
+def check_srcdata_and_vocab():
+    f1 = open('data/src_data/src_data.txt', 'r', encoding='utf-8')
+    f2 = open(VocabPath, 'r', encoding='utf-8')
+    local_tokens = []
+    vocabs = []
+    missing = []
+    for l in f1:
+        if l:
+            l = l.strip()
+            for x in l:
+                local_tokens.append(x)
+    local_tokens = list(set(local_tokens))
+    for l in f2:
+        if l:
+            l = l.strip()
+            vocabs.append(l)
+    for x in local_tokens:
+        if x not in vocabs:
+            missing.append(x)
+    if missing:
+        print('警告！本地vocab缺少以下字符：')
+        for x in missing:
+            print(x)
+
+
 def random_wrong(text):
     tokenizer = Tokenizer(VocabPath, do_lower_case=True)
     length = len(text)
@@ -39,4 +64,6 @@ def gen_train_test():
 
 
 if __name__ == '__main__':
+    print(len(open(VocabPath, 'r', encoding='utf-8').readlines()))
+    check_srcdata_and_vocab()
     gen_train_test()
