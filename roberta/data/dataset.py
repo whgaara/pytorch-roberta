@@ -37,13 +37,20 @@ class RobertaTrainingData(object):
         texts_ids = []
         for text in texts:
             # 处理每个句子
-            # 注意roberta里并不是针对每个字进行mask，而是对字或者词进行mask
-            words = self.seg.cut(text)
-            for word in words:
-                # text_ids首位分别是cls和sep，这里暂时去除
-                word_tokes = self.tokenizer.tokenize(text=word)[1:-1]
-                words_ids = self.tokenizer.tokens_to_ids(word_tokes)
-                texts_ids.append(words_ids)
+            if ModelClass == 'RobertaMlm':
+                # 注意roberta里并不是针对每个字进行mask，而是对字或者词进行mask
+                words = self.seg.cut(text)
+                for word in words:
+                    # text_ids首位分别是cls和sep，这里暂时去除
+                    word_tokes = self.tokenizer.tokenize(text=word)[1:-1]
+                    words_ids = self.tokenizer.tokens_to_ids(word_tokes)
+                    texts_ids.append(words_ids)
+            else:
+                for word in text:
+                    # text_ids首位分别是cls和sep，这里暂时去除
+                    word_tokes = self.tokenizer.tokenize(text=word)[1:-1]
+                    words_ids = self.tokenizer.tokens_to_ids(word_tokes)
+                    texts_ids.append(words_ids)
         return texts_ids
 
     def ids_to_mask(self, texts_ids):

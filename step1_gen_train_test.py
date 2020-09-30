@@ -1,5 +1,6 @@
 import glob
 import numpy as np
+import pkuseg
 import random
 
 from pretrain_config import *
@@ -7,17 +8,27 @@ from roberta.common.tokenizers import Tokenizer
 
 
 def check_srcdata_and_vocab():
+    segment = pkuseg.pkuseg()
     f1 = open('data/src_data/src_data.txt', 'r', encoding='utf-8')
     f2 = open(VocabPath, 'r', encoding='utf-8')
     local_tokens = []
     vocabs = []
     missing = []
-    for l in f1:
-        if l:
-            l = l.strip()
-            for x in l:
-                local_tokens.append(x)
+    if ModelClass == 'RobertaMlm':
+        for l in f1:
+            if l:
+                l = l.strip()
+                l_seg = segment.cut(l)
+                for x in l_seg:
+                    local_tokens.append(x)
+    else:
+        for l in f1:
+            if l:
+                l = l.strip()
+                for x in l:
+                    local_tokens.append(x)
     local_tokens = list(set(local_tokens))
+
     for l in f2:
         if l:
             l = l.strip()
