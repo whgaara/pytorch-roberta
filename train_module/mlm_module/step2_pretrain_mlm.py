@@ -4,41 +4,35 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import torch.nn as nn
 
 from torch.optim import Adam
-from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from roberta.data.dataset import *
+from roberta.data.mlm_dataset import *
 from roberta.layers.Roberta_mlm import RobertaMlm
-
-
-class MyLoss(nn.Module):
-    def __init__(self):
-        super().__init__()
-
-    def forward(self, x, y):
-        z = x * y
-        # z = torch.sum(z, dim=-1)
-        z = torch.tensor(1.0).to(device) - torch.sum(z, dim=-1)
-        z = torch.mean(torch.sum(z, dim=-1))
-        return z
 
 
 if __name__ == '__main__':
     if Debug:
         print('开始训练 %s' % get_time())
+    onehot_type = False
     roberta = RobertaMlm().to(device)
     if Debug:
         print('Total Parameters:', sum([p.nelement() for p in roberta.parameters()]))
 
-    if SentenceLength == 512:
-        roberta.load_pretrain()
+    if UsePretrain and os.path.exists(PretrainPath):
+        if SentenceLength == 512:
+            print('开始加载预训练模型！')
+            roberta.load_pretrain(SentenceLength)
+            print('完成加载预训练模型！')
+        if SentenceLength == 128:
+            print('开始加载本地模型！')
+            roberta.load_pretrain(SentenceLength)
+            print('完成加载本地模型！')
 
-    dataset = RobertaDataSet(CorpusPath)
-    dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True)
+    dataset = RobertaDataSet(CorpusPath, onehot_type)
+    dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True, drop_last=True)
     testset = RobertaTestSet(TestPath)
 
     optim = Adam(roberta.parameters(), lr=LearningRate)
-    # criterion = nn.L1Loss(reduction='sum').to(device)
-    criterion = MyLoss().to(device)
+    criterion = nn.CrossEntropyLoss().to(device)
 
     for epoch in range(Epochs):
         # train
@@ -56,28 +50,13 @@ if __name__ == '__main__':
             data = {k: v.to(device) for k, v in data.items()}
             input_token = data['input_token_ids']
             segment_ids = data['segment_ids']
-            is_masked = data['is_masked']
             label = data['token_ids_labels']
-            onehot_labels = data['onehot_labels'].float().to(device)
             if Debug:
                 print('获取数据 %s' % get_time())
-            mlm_output = nn.Softmax(dim=-1)(roberta(input_token, segment_ids))
-
-            # 获取mask字段的输出
-            # masked_mlm_output = []
-            # for batch, num in enumerate(is_masked):
-            #     char_num = num.item()
-            #     masked_mlm_output.append([mlm_output[batch][char_num].tolist()])
-            # masked_mlm_output = torch.tensor(masked_mlm_output).to(device)
-            # masked_mlm_output = Variable(masked_mlm_output, requires_grad=True)
-            # masked_mlm_output = mlm_output.index_select(dim=1, index=is_masked)
-
-
+            mlm_output = roberta(input_token, segment_ids).permute(0, 2, 1)
             if Debug:
                 print('完成前向 %s' % get_time())
-            # mask_loss = criterion(mlm_output, label)
-            mask_loss = criterion(mlm_output, onehot_labels)
-            # mask_loss = criterion(masked_mlm_output, onehot_labels)
+            mask_loss = criterion(mlm_output, label)
             print_loss = mask_loss.item()
             optim.zero_grad()
             mask_loss.backward()

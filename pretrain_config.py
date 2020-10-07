@@ -5,13 +5,12 @@ cuda_condition = torch.cuda.is_available()
 device = torch.device('cuda:0' if cuda_condition else 'cpu')
 
 # ## 文件路径 ## #
-ModelSavePath = 'checkpoint/finetune'
-SourcePath = 'data/src_data'
-CorpusPath = 'data/train_data'
-TestPath = 'data/test_data/test.txt'
-VocabPath = 'checkpoint/pretrain/vocab.txt'
-FinetunePath = 'checkpoint/finetune/roberta_trained.model'
-PronunciationPath = 'data/char_meta.txt'
+SourcePath = '../../data/src_data'
+CorpusPath = '../../data/train_data'
+TestPath = '../../data/test_data/test.txt'
+VocabPath = '../../checkpoint/pretrain/vocab.txt'
+FinetunePath = '../../checkpoint/finetune/roberta_trained.model'
+PronunciationPath = '../../data/char_meta.txt'
 
 # Debug开关
 Debug = False
@@ -27,12 +26,12 @@ if ModelClass == 'Bert':
     RepeatNum = 1
     BatchSize = 16
     SentenceLength = 128
-    PretrainPath = 'checkpoint/finetune/roberta_trained.model'
+    PretrainPath = '../../checkpoint/finetune/roberta_trained.model'
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     BatchSize = 1
     SentenceLength = 512
-    PretrainPath = 'checkpoint/pretrain/pytorch_model.bin'
+    PretrainPath = '../../checkpoint/pretrain/pytorch_model.bin'
 
 Epochs = 16
 DropOut = 0.1

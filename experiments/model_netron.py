@@ -8,7 +8,7 @@ import torch.onnx
 from tqdm import tqdm
 from char_sim import CharFuncs
 from pretrain_config import FinetunePath, device, PronunciationPath, SentenceLength
-from roberta.data.dataset import RobertaTrainingData
+from roberta.data.mlm_dataset import RobertaTrainingData
 
 
 def get_finetune_model_parameters():

@@ -9,7 +9,7 @@ from roberta.common.tokenizers import Tokenizer
 
 def check_srcdata_and_vocab():
     segment = pkuseg.pkuseg()
-    f1 = open('data/src_data/src_data.txt', 'r', encoding='utf-8')
+    f1 = open('../../data/src_data/src_data.txt', 'r', encoding='utf-8')
     f2 = open(VocabPath, 'r', encoding='utf-8')
     local_tokens = []
     vocabs = []
@@ -54,8 +54,8 @@ def random_wrong(text):
 
 
 def gen_train_test():
-    f_train = open('data/train_data/train.txt', 'w', encoding='utf-8')
-    f_test = open('data/test_data/test.txt', 'w', encoding='utf-8')
+    f_train = open('../../data/train_data/train.txt', 'w', encoding='utf-8')
+    f_test = open('../../data/test_data/test.txt', 'w', encoding='utf-8')
 
     filenames = glob.glob('%s/*.txt' % SourcePath)
     np.random.shuffle(filenames)

@@ -1,6 +1,5 @@
 import glob
 import math
-import copy
 import pkuseg
 import numpy as np
 
