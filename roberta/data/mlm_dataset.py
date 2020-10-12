@@ -166,30 +166,24 @@ class RobertaDataSet(Dataset):
 
     def __get_texts(self, mode=ModelClass):
         if mode == 'RobertaMlm':
-            filenames = glob.glob('%s/*.txt' % self.corpus_path)
-            np.random.shuffle(filenames)
             count, texts = 0, []
-            for filename in filenames:
-                with open(filename, 'r', encoding='utf-8') as f:
-                    for line in f:
-                        line = line.strip()
-                        texts.append(line)
-                        count += 1
-                        # 10个句子组成一个段落
-                        if count == 10:
-                            yield texts
-                            count, texts = 0, []
+            with open(self.corpus_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    texts.append(line)
+                    count += 1
+                    # 10个句子组成一个段落
+                    if count == 10:
+                        yield texts
+                        count, texts = 0, []
             if texts:
                 yield texts
 
         if mode == 'Bert':
-            filenames = glob.glob('%s/*.txt' % self.corpus_path)
-            np.random.shuffle(filenames)
-            for filename in filenames:
-                with open(filename, 'r', encoding='utf-8') as f:
-                    for line in f:
-                        line = line.strip()
-                        yield [line]
+            with open(self.corpus_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    yield [line]
 
     def __len__(self):
         return len(self.tar_lines)

@@ -1,5 +1,3 @@
-import glob
-import numpy as np
 import pkuseg
 import random
 
@@ -54,14 +52,9 @@ def random_wrong(text):
 
 
 def gen_train_test():
-    f_train = open('../../data/train_data/train.txt', 'w', encoding='utf-8')
-    f_test = open('../../data/test_data/test.txt', 'w', encoding='utf-8')
-
-    # filenames = glob.glob('%s/*.txt' % SourcePath)
-    # np.random.shuffle(filenames)
-    # for filename in filenames:
-    filename = '../../data/src_data/src_data.txt'
-    with open(filename, 'r', encoding='utf-8') as f:
+    f_train = open(CorpusPath, 'w', encoding='utf-8')
+    f_test = open(TestPath, 'w', encoding='utf-8')
+    with open(SourcePath, 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             rad = random.randint(0, 10)
