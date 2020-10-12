@@ -7,7 +7,7 @@ from roberta.common.tokenizers import Tokenizer
 
 def check_srcdata_and_vocab():
     segment = pkuseg.pkuseg()
-    f1 = open('../../data/src_data/src_data.txt', 'r', encoding='utf-8')
+    f1 = open(SourcePath, 'r', encoding='utf-8')
     f2 = open(VocabPath, 'r', encoding='utf-8')
     local_tokens = []
     vocabs = []

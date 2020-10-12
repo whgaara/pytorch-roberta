@@ -192,7 +192,6 @@ class RobertaDataSet(Dataset):
         instance = self.tar_lines[item]
         token_ids = instance[0]
         mask_ids = instance[1]
-        # is_masked = [1 if x else 0 for x in mask_ids]
         is_masked = []
         for i, id in enumerate(mask_ids):
             if id != 0:
