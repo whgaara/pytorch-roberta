@@ -4,13 +4,20 @@ import torch
 cuda_condition = torch.cuda.is_available()
 device = torch.device('cuda:0' if cuda_condition else 'cpu')
 
-# ## 文件路径 ## #
+VocabPath = '../../checkpoint/pretrain/vocab.txt'
+
+# ## mlm模型文件路径 ## #
 SourcePath = '../../data/src_data/src_data.txt'
 CorpusPath = '../../data/train_data/train.txt'
 TestPath = '../../data/test_data/test.txt'
-VocabPath = '../../checkpoint/pretrain/vocab.txt'
 FinetunePath = '../../checkpoint/finetune/roberta_trained.model'
 PronunciationPath = '../../data/char_meta.txt'
+
+# ## ner模型文件路径 ## #
+NerSourcePath = '../../data/src_data/ner_src_data.txt'
+NerCorpusPath = '../../data/train_data/ner_train.txt'
+NerTestPath = '../../data/test_data/ner_test.txt'
+NerFinetunePath = '../../checkpoint/finetune/ner_roberta_trained.model'
 
 # Debug开关
 Debug = False

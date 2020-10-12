@@ -1,4 +1,3 @@
-import glob
 import math
 import pkuseg
 import numpy as np
@@ -11,7 +10,7 @@ from torch.utils.data import Dataset
 
 class NerDataSet(Dataset):
     def __init__(self, corpus_path):
-        pass
+        self.corpus_path = corpus_path
 
     def __len__(self):
         pass
