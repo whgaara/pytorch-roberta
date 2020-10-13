@@ -65,4 +65,23 @@ class NerDataSet(Dataset):
         input_token_ids = []
         input_token_classes = []
 
+
+
         return input_token_ids, input_token_classes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
