@@ -8,7 +8,7 @@ import torch.onnx
 from tqdm import tqdm
 from char_sim import CharFuncs
 from pretrain_config import FinetunePath, device, PronunciationPath, SentenceLength
-from roberta.data.mlm_dataset import RobertaTrainingData
+from roberta.data.mlm_dataset import DataFactory
 
 
 def get_finetune_model_parameters():
@@ -47,7 +47,7 @@ class Inference(object):
         self.mode = mode
         self.model = torch.load(FinetunePath).to(device)
         self.char_func = CharFuncs(PronunciationPath)
-        self.roberta_data = RobertaTrainingData()
+        self.roberta_data = DataFactory()
         print('加载模型完成！')
 
     def get_id_from_text(self, text):

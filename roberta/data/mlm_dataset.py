@@ -8,7 +8,7 @@ from pretrain_config import *
 from torch.utils.data import Dataset
 
 
-class RobertaTrainingData(object):
+class DataFactory(object):
     def __init__(self):
         self.tokenizer = Tokenizer(VocabPath, do_lower_case=True)
         self.seg = pkuseg.pkuseg()
@@ -133,7 +133,7 @@ class RobertaDataSet(Dataset):
     def __init__(self, corpus_path, onehot_type=False):
         self.corpus_path = corpus_path
         self.onehot_type = onehot_type
-        self.roberta_data = RobertaTrainingData()
+        self.roberta_data = DataFactory()
         self.src_lines = []
         self.tar_lines = []
         self.tokenid_to_count = {}
