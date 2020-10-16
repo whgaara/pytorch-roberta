@@ -13,6 +13,7 @@ class NerDataSet(Dataset):
     def __init__(self, corpus_path):
         self.corpus_path = corpus_path
         self.data_factory = DataFactory()
+        self.tokenizer = Tokenizer(VocabPath)
         self.src_lines = []
         self.tar_lines = []
         self.class_to_num = {}
@@ -23,11 +24,13 @@ class NerDataSet(Dataset):
                     line = line.strip()
                     self.src_lines.append(line)
         for line in self.src_lines:
-            if self.verify_line(line):
-                input_token_ids, input_token_classes = self.parse_ori_line(line)
+            if self.__verify_line(line):
+                input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id = self.__parse_ori_line(line)
                 tmp = {
-                    'sentence': input_token_ids,
-                    'classes': input_token_classes
+                    'input_tokens': input_tokens,
+                    'input_tokens_id': input_tokens_id,
+                    'input_tokens_class': input_tokens_class,
+                    'input_tokens_class_id': input_tokens_class_id
                 }
                 self.tar_lines.append(tmp)
 
@@ -37,7 +40,11 @@ class NerDataSet(Dataset):
     def __getitem__(self, item):
         return self.tar_lines[item]
 
-    def verify_line(self, line):
+    @property
+    def get_classes_to_num(self):
+        return self.class_to_num
+
+    def __verify_line(self, line):
         """
         校验是否有成对得{}出现
         """
@@ -55,7 +62,7 @@ class NerDataSet(Dataset):
             else:
                 return False
 
-    def parse_ori_line(self, ori_line):
+    def __parse_ori_line(self, ori_line):
         """
         :param ori_line: 六味地黄{3,ypcf}丸{1,yplb}
         :return:
@@ -64,15 +71,16 @@ class NerDataSet(Dataset):
         """
         ori_line = ori_line.strip().replace(' ', '')
         input_tokens = ''
-        input_token_ids = []
-        input_token_classes = []
+        input_tokens_id = []
+        input_tokens_class = []
+        input_tokens_class_id = []
         i = 0
         l = 0
         ori_line_list = list(ori_line)
         while i < len(ori_line_list):
             if ori_line_list[i] != '{' and ori_line_list[i] != '}':
                 input_tokens += ori_line_list[i]
-                input_token_classes.append(0)
+                input_tokens_class.append(0)
                 i += 1
                 l += 1
             if ori_line_list[i] == '{':
@@ -93,23 +101,34 @@ class NerDataSet(Dataset):
 
                 current_len = int(current_len)
                 if current_len == 1:
-                    input_token_classes[l - 1] = 'e' + current_type
+                    input_tokens_class[l - 1] = 'e' + current_type
                 elif current_len == 2:
-                    input_token_classes[l - 2] = 'b' + current_type
-                    input_token_classes[l - 1] = 'e' + current_type
+                    input_tokens_class[l - 2] = 'b' + current_type
+                    input_tokens_class[l - 1] = 'e' + current_type
                 else:
-                    input_token_classes[l - current_len] = 'b' + current_type
-                    input_token_classes[l - 1] = 'e' + current_type
+                    input_tokens_class[l - current_len] = 'b' + current_type
+                    input_tokens_class[l - 1] = 'e' + current_type
                     for k in range(current_len - 2):
-                        input_token_classes[l - 2 - k] = 'i' + current_type
+                        input_tokens_class[l - 2 - k] = 'i' + current_type
                 i = j
                 i += 1
 
-        return input_token_ids, input_token_classes
+        for token in input_tokens:
+            id = self.tokenizer.token_to_id(token)
+            input_tokens_id.append(id)
+
+        # 数值化文字分类
+        for token_class in input_tokens_class:
+            if token_class in self.class_to_num:
+                input_tokens_class_id.append(self.class_to_num[token_class])
+            else:
+                self.class_to_num[token_class] = len(self.class_to_num) + 1
+                input_tokens_class_id.append(self.class_to_num[token_class])
+
+        return input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id
 
 
 if __name__ == '__main__':
     dataset = NerDataSet(NerSourcePath)
-    for i, data in dataset:
-        print(i)
-        xxx = data
+    for i, data in enumerate(dataset):
+        print(data)
