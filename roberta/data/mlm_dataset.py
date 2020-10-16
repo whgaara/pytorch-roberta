@@ -10,7 +10,7 @@ from torch.utils.data import Dataset
 
 class DataFactory(object):
     def __init__(self):
-        self.tokenizer = Tokenizer(VocabPath, do_lower_case=True)
+        self.tokenizer = Tokenizer(VocabPath)
         self.seg = pkuseg.pkuseg()
         self.vocab_size = self.tokenizer._vocab_size
         self.token_pad_id = self.tokenizer._token_pad_id

@@ -24,7 +24,7 @@ class Roberta(nn.Module):
         self.attention_head_num = attention_heads
         self.dropout_prob = dropout_prob
         self.attention_head_size = hidden // attention_heads
-        self.tokenizer = Tokenizer(VocabPath, do_lower_case=True)
+        self.tokenizer = Tokenizer(VocabPath)
         self.intermediate_size = intermediate_size
 
         # 申明网络

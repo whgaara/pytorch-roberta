@@ -41,7 +41,7 @@ def check_srcdata_and_vocab():
 
 
 def random_wrong(text):
-    tokenizer = Tokenizer(VocabPath, do_lower_case=True)
+    tokenizer = Tokenizer(VocabPath)
     length = len(text)
     position = random.randint(0, length-1)
     number = random.randint(672, 7992)
