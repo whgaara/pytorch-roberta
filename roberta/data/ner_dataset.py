@@ -67,12 +67,14 @@ class NerDataSet(Dataset):
         input_token_ids = []
         input_token_classes = []
         i = 0
+        l = 0
         ori_line_list = list(ori_line)
         while i < len(ori_line_list):
-            i += 1
             if ori_line_list[i] != '{' and ori_line_list[i] != '}':
                 input_tokens += ori_line_list[i]
                 input_token_classes.append(0)
+                i += 1
+                l += 1
             if ori_line_list[i] == '{':
                 current_type = ''
                 current_len = ''
@@ -85,22 +87,23 @@ class NerDataSet(Dataset):
                         break
                 while True:
                     j += 1
-                    current_type += ori_line_list[j]
                     if ori_line_list[j] == '}':
                         break
+                    current_type += ori_line_list[j]
 
                 current_len = int(current_len)
                 if current_len == 1:
-                    input_token_classes[i - 1] = 'e' + current_type
+                    input_token_classes[l - 1] = 'e' + current_type
                 elif current_len == 2:
-                    input_token_classes[i - 2] = 'b' + current_type
-                    input_token_classes[i - 1] = 'e' + current_type
+                    input_token_classes[l - 2] = 'b' + current_type
+                    input_token_classes[l - 1] = 'e' + current_type
                 else:
-                    input_token_classes[i - current_len] = 'b' + current_type
-                    input_token_classes[i - 1] = 'e' + current_type
+                    input_token_classes[l - current_len] = 'b' + current_type
+                    input_token_classes[l - 1] = 'e' + current_type
                     for k in range(current_len - 2):
-                        input_token_classes[i - 2 - k] = 'i' + current_type
+                        input_token_classes[l - 2 - k] = 'i' + current_type
                 i = j
+                i += 1
 
         return input_token_ids, input_token_classes
 
