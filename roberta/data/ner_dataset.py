@@ -1,7 +1,3 @@
-import math
-import pkuseg
-import numpy as np
-
 from tqdm import tqdm
 from roberta.data.mlm_dataset import DataFactory
 from roberta.common.tokenizers import Tokenizer
@@ -23,7 +19,7 @@ class NerDataSet(Dataset):
                 if line:
                     line = line.strip()
                     self.src_lines.append(line)
-        for line in self.src_lines:
+        for line in tqdm(self.src_lines):
             if self.__verify_line(line):
                 input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id = self.__parse_ori_line(line)
                 tmp = {
