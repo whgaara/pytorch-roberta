@@ -10,7 +10,7 @@ from roberta.data.mlm_dataset import DataFactory
 
 
 def get_finetune_model_parameters():
-    model = torch.load('checkpoint/finetune/roberta_trained.model.ep3.ep3')
+    model = torch.load('checkpoint/finetune/roberta_trained_128.model')
     layers = model.state_dict().keys()
     for layer in layers:
         print(layer)
@@ -88,7 +88,6 @@ class Inference(object):
     def get_topk(self, text):
         input_len = len(text)
         text2id, segments = self.get_id_from_text(text)
-        # self.model.eval()
         with torch.no_grad():
             result = []
             output_tensor = self.model(text2id, segments)[:, 1:input_len + 1, :]

@@ -10,7 +10,7 @@ VocabPath = '../../checkpoint/pretrain/vocab.txt'
 SourcePath = '../../data/src_data/src_data.txt'
 CorpusPath = '../../data/train_data/train.txt'
 TestPath = '../../data/test_data/test.txt'
-FinetunePath = '../../checkpoint/finetune/roberta_trained.model'
+FinetunePath = '../../checkpoint/finetune/roberta_trained_128.model'
 PronunciationPath = '../../data/char_meta.txt'
 
 # ## ner模型文件路径 ## #
@@ -28,26 +28,28 @@ UsePretrain = True
 # 任务模式
 ModelClass = 'Bert'
 
-# ## 训练参数 ## #
+# ## 训练调试参数开始 ## #
+Epochs = 16
+WordGenTimes = 20
+LearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1
     BatchSize = 16
     SentenceLength = 128
-    PretrainPath = '../../checkpoint/finetune/roberta_trained.model'
+    PretrainPath = '../../checkpoint/finetune/roberta_trained_%s.model' % SentenceLength
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     BatchSize = 1
     SentenceLength = 512
     PretrainPath = '../../checkpoint/pretrain/pytorch_model.bin'
+# ## 训练调试参数结束 ## #
 
-Epochs = 16
 DropOut = 0.1
 MaskRate = 0.15
 VocabSize = len(open(VocabPath, 'r', encoding='utf-8').readlines())
 HiddenSize = 768
-LearningRate = 1e-4
+
 # transformer块个数
-WordGenTimes = 20
 HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12
