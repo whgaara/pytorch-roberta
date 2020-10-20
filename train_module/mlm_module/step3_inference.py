@@ -158,11 +158,23 @@ class Inference(object):
                     else:
                         correct_sentence.append(ori)
             else:
-                correct['新字'] = candidate[0]
-                correct['候选字'] = candidate
-                correct['置信度'] = confidence
-                result['纠正数据'].append(correct)
-                correct_sentence.append(candidate[0])
+                tmp_can = []
+                tmp_cof = []
+                for index, score in enumerate(confidence):
+                    if score > 0.001:
+                        tmp_can.append(candidate[index])
+                        tmp_cof.append(confidence[index])
+                if ori in tmp_can:
+                    correct_sentence.append(ori)
+                    continue
+                if confidence[0] > 0.99:
+                    correct['新字'] = candidate[0]
+                    correct['候选字'] = candidate
+                    correct['置信度'] = confidence
+                    result['纠正数据'].append(correct)
+                    correct_sentence.append(candidate[0])
+                else:
+                    correct_sentence.append(ori)
 
         result['纠正'] = ''.join(correct_sentence)
         return result
