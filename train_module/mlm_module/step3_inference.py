@@ -43,7 +43,7 @@ class Inference(object):
         self.sen_invalid = 0
         self.sen_wrong = 0
         self.mode = mode
-        self.model = torch.load(FinetunePath).to(device)
+        self.model = torch.load(FinetunePath).to(device).eval()
         self.char_func = CharFuncs(PronunciationPath)
         self.roberta_data = DataFactory()
         print('加载模型完成！')
@@ -88,7 +88,7 @@ class Inference(object):
     def get_topk(self, text):
         input_len = len(text)
         text2id, segments = self.get_id_from_text(text)
-        self.model.eval()
+        # self.model.eval()
         with torch.no_grad():
             result = []
             output_tensor = self.model(text2id, segments)[:, 1:input_len + 1, :]

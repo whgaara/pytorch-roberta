@@ -15,13 +15,13 @@ class MultiHeadSelfAttention(nn.Module):
         self.attention_head_size = attention_head_size
         self.size_per_head = size_per_head
         self.out_dim = attention_head_num * attention_head_size
-        self.dropout_prob = dropout_prob
 
         # 申明网络
         self.q_dense = nn.Linear(self.out_dim, self.out_dim)
         self.k_dense = nn.Linear(self.out_dim, self.out_dim)
         self.v_dense = nn.Linear(self.out_dim, self.out_dim)
         self.softmax = nn.Softmax(dim=-1)
+        self.dropout = nn.Dropout(dropout_prob)
         self.o_dense = nn.Linear(self.out_dim, self.out_dim)
 
     def forward(self, x, attention_mask):
@@ -56,7 +56,7 @@ class MultiHeadSelfAttention(nn.Module):
 
         attention_scores = self.softmax(attention_scores)
         attention_scores = torch.matmul(attention_scores, v)
-        attention_scores = nn.Dropout(p=self.dropout_prob)(attention_scores)
+        attention_scores = self.dropout(attention_scores)
         attention_scores = attention_scores.view([batch_size, seq_len, self.out_dim])
         attention_scores = self.o_dense(attention_scores)
         return attention_scores
