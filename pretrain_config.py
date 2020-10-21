@@ -10,7 +10,6 @@ VocabPath = '../../checkpoint/pretrain/vocab.txt'
 SourcePath = '../../data/src_data/src_data.txt'
 CorpusPath = '../../data/train_data/train.txt'
 TestPath = '../../data/test_data/test.txt'
-FinetunePath = '../../checkpoint/finetune/roberta_trained_128.model'
 PronunciationPath = '../../data/char_meta.txt'
 
 # ## ner模型文件路径 ## #
@@ -42,6 +41,7 @@ if ModelClass == 'RobertaMlm':
     BatchSize = 1
     SentenceLength = 512
     PretrainPath = '../../checkpoint/pretrain/pytorch_model.bin'
+FinetunePath = '../../checkpoint/finetune/roberta_trained_%s.model' % SentenceLength
 # ## 训练调试参数结束 ## #
 
 DropOut = 0.1
