@@ -23,7 +23,6 @@ class RobertaEmbeddings(nn.Module):
             tmp = [x for x in range(SentenceLength)]
             position_ids.append(tmp)
         position_ids = torch.tensor(position_ids).to(device)
-        # postion_embeddings = self.position_embeddings.weight
         postion_embeddings = self.position_embeddings(position_ids)
         embedding_x = token_embeddings + type_embeddings + postion_embeddings
         embedding_x = self.emb_normalization(embedding_x)
