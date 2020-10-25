@@ -12,7 +12,10 @@ class NerDataSet(Dataset):
         self.tokenizer = Tokenizer(VocabPath)
         self.src_lines = []
         self.tar_lines = []
-        self.class_to_num = {}
+        self.class_to_num = {
+            'pad': 0,
+            NormalChar: 1
+        }
         # 收集数据
         with open(self.corpus_path, 'r', encoding='utf-8') as f:
             for line in f:
@@ -22,6 +25,8 @@ class NerDataSet(Dataset):
         for line in tqdm(self.src_lines):
             if self.__verify_line(line):
                 input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id = self.__parse_ori_line(line)
+                if not input_tokens:
+                    continue
                 tmp = {
                     'input_tokens': input_tokens,
                     'input_tokens_id': input_tokens_id,
@@ -76,7 +81,7 @@ class NerDataSet(Dataset):
         while i < len(ori_line_list):
             if ori_line_list[i] != '{' and ori_line_list[i] != '}':
                 input_tokens += ori_line_list[i]
-                input_tokens_class.append(0)
+                input_tokens_class.append(NormalChar)
                 i += 1
                 l += 1
             if ori_line_list[i] == '{':
@@ -113,12 +118,20 @@ class NerDataSet(Dataset):
             id = self.tokenizer.token_to_id(token)
             input_tokens_id.append(id)
 
+        # 补全类别
+        if len(input_tokens_id) > MedicineLength:
+            return None, None, None, None
+        else:
+            for i in range(MedicineLength - len(input_tokens_id)):
+                input_tokens_id.append(0)
+                input_tokens_class.append('pad')
+
         # 数值化文字分类
         for token_class in input_tokens_class:
             if token_class in self.class_to_num:
                 input_tokens_class_id.append(self.class_to_num[token_class])
             else:
-                self.class_to_num[token_class] = len(self.class_to_num) + 1
+                self.class_to_num[token_class] = len(self.class_to_num)
                 input_tokens_class_id.append(self.class_to_num[token_class])
 
         return input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id

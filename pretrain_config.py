@@ -26,8 +26,9 @@ UsePretrain = True
 
 # 任务模式
 ModelClass = 'Bert'
+NormalChar = 'ptzf'
 
-# ## 训练调试参数开始 ## #
+# ## MLM训练调试参数开始 ## #
 Epochs = 16
 WordGenTimes = 20
 LearningRate = 1e-4
@@ -42,7 +43,11 @@ if ModelClass == 'RobertaMlm':
     SentenceLength = 512
     PretrainPath = '../../checkpoint/pretrain/pytorch_model.bin'
 FinetunePath = '../../checkpoint/finetune/roberta_trained_%s.model' % SentenceLength
-# ## 训练调试参数结束 ## #
+# ## MLM训练调试参数结束 ## #
+
+# ## NER训练调试参数开始 ## #
+MedicineLength = 16
+# ## NER训练调试参数结束 ## #
 
 DropOut = 0.1
 MaskRate = 0.15
