@@ -38,8 +38,8 @@ def parse_ori_line(ori_line):
     }
     ori_line = ori_line.strip().replace(' ', '')
     input_tokens = ''
-    input_tokens_id = []
-    input_tokens_class = []
+    input_tokens_id = [101]
+    input_tokens_class = [NormalChar]
     input_tokens_class_id = []
     tokenizer = Tokenizer(VocabPath)
     i = 0
@@ -89,9 +89,11 @@ def parse_ori_line(ori_line):
         input_tokens_id.append(id)
 
     # 补全类别
-    if len(input_tokens_id) > MedicineLength:
+    if len(input_tokens_id) > MedicineLength - 1:
         return None, None, None, None
     else:
+        input_tokens_id.append(102)
+        input_tokens_class.append(NormalChar)
         for i in range(MedicineLength - len(input_tokens_id)):
             input_tokens_id.append(0)
             input_tokens_class.append('pad')

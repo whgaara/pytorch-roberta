@@ -12,13 +12,6 @@ CorpusPath = '../../data/train_data/train.txt'
 TestPath = '../../data/test_data/test.txt'
 PronunciationPath = '../../data/char_meta.txt'
 
-# ## ner模型文件路径 ## #
-NerSourcePath = '../../data/src_data/ner_src_data.txt'
-NerCorpusPath = '../../data/train_data/ner_train.txt'
-NerTestPath = '../../data/test_data/ner_test.txt'
-Class2NumFile = '../../data/train_data/c2n.pickle'
-NerFinetunePath = '../../checkpoint/finetune/ner_roberta_trained.model'
-
 # Debug开关
 Debug = False
 
@@ -27,11 +20,10 @@ UsePretrain = True
 
 # 任务模式
 ModelClass = 'Bert'
-NormalChar = 'ptzf'
 
 # ## MLM训练调试参数开始 ## #
 Epochs = 16
-WordGenTimes = 20
+WordGenTimes = 10
 LearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1
@@ -46,18 +38,11 @@ if ModelClass == 'RobertaMlm':
 FinetunePath = '../../checkpoint/finetune/mlm_trained_%s.model' % SentenceLength
 # ## MLM训练调试参数结束 ## #
 
-# ## NER训练调试参数开始 ## #
-NerBatchSize = 4
-MedicineLength = 16
-NerFinetunePath = '../../checkpoint/finetune/ner_trained_%s.model' % MedicineLength
-# ## NER训练调试参数结束 ## #
-
+# ## MLM通用参数 ## #
 DropOut = 0.1
 MaskRate = 0.15
 VocabSize = len(open(VocabPath, 'r', encoding='utf-8').readlines())
 HiddenSize = 768
-
-# transformer块个数
 HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12
@@ -89,6 +74,21 @@ local2target_transformer = {
     'transformer_blocks.%s.feedforward_layernorm.weight': 'bert.encoder.layer.%s.output.LayerNorm.weight',
     'transformer_blocks.%s.feedforward_layernorm.bias': 'bert.encoder.layer.%s.output.LayerNorm.bias',
 }
+
+# ## NER训练调试参数开始 ## #
+NerBatchSize = 4
+MedicineLength = 32
+# ## NER训练调试参数结束 ## #
+
+# ## ner模型文件路径 ## #
+NerSourcePath = '../../data/src_data/ner_src_data.txt'
+NerCorpusPath = '../../data/train_data/ner_train.txt'
+NerTestPath = '../../data/test_data/ner_test.txt'
+Class2NumFile = '../../data/train_data/c2n.pickle'
+NerFinetunePath = '../../checkpoint/finetune/ner_trained_%s.model' % MedicineLength
+
+# ## NER通用参数 ## #
+NormalChar = 'ptzf'
 
 
 def get_time():
