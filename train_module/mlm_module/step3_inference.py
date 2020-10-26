@@ -10,7 +10,7 @@ from roberta.data.mlm_dataset import DataFactory
 
 
 def get_finetune_model_parameters():
-    model = torch.load('checkpoint/finetune/roberta_trained_128.model')
+    model = torch.load('checkpoint/finetune/mlm_trained_128.model')
     layers = model.state_dict().keys()
     for layer in layers:
         print(layer)

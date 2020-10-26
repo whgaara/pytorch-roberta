@@ -37,17 +37,19 @@ if ModelClass == 'Bert':
     RepeatNum = 1
     BatchSize = 16
     SentenceLength = 128
-    PretrainPath = '../../checkpoint/finetune/roberta_trained_%s.model' % SentenceLength
+    PretrainPath = '../../checkpoint/finetune/mlm_trained_%s.model' % SentenceLength
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
     BatchSize = 1
     SentenceLength = 512
     PretrainPath = '../../checkpoint/pretrain/pytorch_model.bin'
-FinetunePath = '../../checkpoint/finetune/roberta_trained_%s.model' % SentenceLength
+FinetunePath = '../../checkpoint/finetune/mlm_trained_%s.model' % SentenceLength
 # ## MLM训练调试参数结束 ## #
 
 # ## NER训练调试参数开始 ## #
+NerBatchSize = 4
 MedicineLength = 16
+NerFinetunePath = '../../checkpoint/finetune/ner_trained_%s.model' % MedicineLength
 # ## NER训练调试参数结束 ## #
 
 DropOut = 0.1

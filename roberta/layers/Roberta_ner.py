@@ -12,7 +12,7 @@ class RobertaNer(nn.Module):
                  number_of_categories,
                  vocab_size=VocabSize,
                  hidden=HiddenSize,
-                 max_len=SentenceLength,
+                 max_len=MedicineLength,
                  num_hidden_layers=HiddenLayerNum,
                  attention_heads=AttentionHeadNum,
                  dropout_prob=DropOut,

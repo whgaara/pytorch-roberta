@@ -33,13 +33,18 @@ class NerDataSet(Dataset):
             input_tokens_id = [int(x) for x in input_tokens_id.split(' ')]
             input_tokens_class = input_tokens_class.split(' ')
             input_tokens_class_id = [int(x) for x in input_tokens_class_id.split(' ')]
-
+            segment_ids = []
+            for x in input_tokens_class_id:
+                if x:
+                    segment_ids.append(1)
+                else:
+                    segment_ids.append(0)
             tmp = {
-                'input_tokens': input_tokens,
                 'input_tokens_id': input_tokens_id,
-                'input_tokens_class': input_tokens_class,
-                'input_tokens_class_id': input_tokens_class_id
+                'input_tokens_class_id': input_tokens_class_id,
+                'segment_ids': segment_ids
             }
+            tmp = {k: torch.tensor(v, dtype=torch.long) for k, v in tmp.items()}
             self.tar_lines.append(tmp)
 
     def __len__(self):
