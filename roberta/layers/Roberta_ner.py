@@ -2,12 +2,14 @@ import torch.nn as nn
 
 from pretrain_config import *
 from roberta.common.tokenizers import Tokenizer
+from roberta.layers.Mlm import Mlm
 from roberta.layers.Transformer import Transformer
 from roberta.layers.RobertaEmbeddings import RobertaEmbeddings
 
 
-class Roberta(nn.Module):
+class RobertaNer(nn.Module):
     def __init__(self,
+                 number_of_categories,
                  vocab_size=VocabSize,
                  hidden=HiddenSize,
                  max_len=SentenceLength,
@@ -16,7 +18,7 @@ class Roberta(nn.Module):
                  dropout_prob=DropOut,
                  intermediate_size=IntermediateSize
                  ):
-        super(Roberta, self).__init__()
+        super(RobertaNer, self).__init__()
         self.vocab_size = vocab_size
         self.hidden_size = hidden
         self.max_len = max_len
@@ -26,6 +28,7 @@ class Roberta(nn.Module):
         self.attention_head_size = hidden // attention_heads
         self.tokenizer = Tokenizer(VocabPath)
         self.intermediate_size = intermediate_size
+        self.number_of_categories = number_of_categories
 
         # 申明网络
         self.roberta_emd = RobertaEmbeddings(vocab_size=self.vocab_size, max_len=self.max_len, hidden_size=self.hidden_size)
@@ -37,6 +40,7 @@ class Roberta(nn.Module):
                 intermediate_size=self.intermediate_size).to(device)
             for _ in range(self.num_hidden_layers)
         )
+        self.mlm = Mlm(self.hidden_size, self.number_of_categories)
 
     @staticmethod
     def gen_attention_masks(segment_ids):
@@ -89,5 +93,5 @@ class Roberta(nn.Module):
         for i in range(self.num_hidden_layers):
             feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
         # ner
-
+        output = self.mlm(feedforward_x)
         return output

@@ -39,7 +39,7 @@ class RobertaMlm(nn.Module):
                 intermediate_size=self.intermediate_size).to(device)
             for _ in range(self.num_hidden_layers)
         )
-        self.mlm = Mlm(hidden, vocab_size)
+        self.mlm = Mlm(self.hidden_size, self.vocab_size)
 
     @staticmethod
     def gen_attention_masks(segment_ids):
