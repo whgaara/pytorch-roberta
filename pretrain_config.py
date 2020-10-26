@@ -16,6 +16,7 @@ PronunciationPath = '../../data/char_meta.txt'
 NerSourcePath = '../../data/src_data/ner_src_data.txt'
 NerCorpusPath = '../../data/train_data/ner_train.txt'
 NerTestPath = '../../data/test_data/ner_test.txt'
+Class2NumFile = '../../data/train_data/c2n.pickle'
 NerFinetunePath = '../../checkpoint/finetune/ner_roberta_trained.model'
 
 # Debug开关
