@@ -9,12 +9,23 @@ from roberta.data.ner_dataset import *
 from roberta.layers.Roberta_ner import RobertaNer
 
 
+def extract_entities(class_list):
+    pass
+
+
 if __name__ == '__main__':
     if Debug:
         print('开始训练 %s' % get_time())
     dataset = NerDataSet()
     dataloader = DataLoader(dataset=dataset, batch_size=NerBatchSize, shuffle=True, drop_last=True)
     testset = NerTestSet()
+
+    # 加载类别映射表
+    with open(Class2NumFile, 'rb') as f:
+        class_to_num = pickle.load(f)
+    num_to_class = {}
+    for k, v in class_to_num.items():
+        num_to_class[v] = k
 
     number_of_categories = len(dataset.class_to_num)
     roberta_ner = RobertaNer(number_of_categories).to(device)
@@ -74,6 +85,9 @@ if __name__ == '__main__':
             top1_count = 0
             top5_count = 0
             for test_data in testset:
+                label2class = []
+                output2class = []
+
                 input_token = test_data['input_tokens_id'].unsqueeze(0).to(device)
                 segment_ids = test_data['segment_ids'].unsqueeze(0).to(device)
                 input_token_list = input_token.tolist()
@@ -83,15 +97,15 @@ if __name__ == '__main__':
                 output_tensor = torch.nn.Softmax(dim=-1)(mlm_output)
                 output_topk = torch.topk(output_tensor, 1).indices.squeeze(0).tolist()
 
-                # #####计算召回和正确率
                 # 累计数值
-                # test_count += input_len
-                # for i in range(input_len):
-                #     label = label_list[i + 1]
-                #     if label == output_topk[i][0]:
-                #         top1_count += 1
-                #     if label in output_topk[i]:
-                #         top5_count += 1
+                for i, output in enumerate(output_topk):
+                    output = output[0]
+                    output2class.append(num_to_class[output])
+                    label2class.append(num_to_class[label_list[i]])
+                output_entities = extract_entities(output2class)
+                label_entities = extract_entities(label2class)
+
+
 
             # if test_count:
             #     top1_acc = float(top1_count) / float(test_count)

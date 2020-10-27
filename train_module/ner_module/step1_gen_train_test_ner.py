@@ -25,21 +25,17 @@ def verify_line(line):
             return False
 
 
-def parse_ori_line(ori_line):
+def parse_ori_line(ori_line, class_to_num):
     """
     :param ori_line: 六味地黄{3,ypcf}丸{1,yplb}
     :return:
     [123, 233, 334, 221, 299, ...]
     [b-ypcf, i-ypcf, i-ypcf, e-ypcf, e-yplb]
     """
-    class_to_num = {
-        'pad': 0,
-        NormalChar: 1
-    }
     ori_line = ori_line.strip().replace(' ', '')
     input_tokens = ''
-    input_tokens_id = [101]
-    input_tokens_class = [NormalChar]
+    input_tokens_id = []
+    input_tokens_class = []
     input_tokens_class_id = []
     tokenizer = Tokenizer(VocabPath)
     i = 0
@@ -89,16 +85,18 @@ def parse_ori_line(ori_line):
         input_tokens_id.append(id)
 
     # 补全类别
-    if len(input_tokens_id) > MedicineLength - 1:
+    if len(input_tokens_id) > MedicineLength - 2:
         return None, None, None, None
     else:
         input_tokens_id.append(102)
         input_tokens_class.append(NormalChar)
-        for i in range(MedicineLength - len(input_tokens_id)):
+        for i in range(MedicineLength - len(input_tokens_id) - 1):
             input_tokens_id.append(0)
             input_tokens_class.append('pad')
 
     # 数值化文字分类
+    input_tokens_id = [101] + input_tokens_id
+    input_tokens_class = [NormalChar] + input_tokens_class
     for token_class in input_tokens_class:
         if token_class in class_to_num:
             input_tokens_class_id.append(class_to_num[token_class])
@@ -110,6 +108,10 @@ def parse_ori_line(ori_line):
 
 
 def gen_train_test():
+    class_to_num = {
+        'pad': 0,
+        NormalChar: 1
+    }
     f_train = open(NerCorpusPath, 'w', encoding='utf-8')
     f_test = open(NerTestPath, 'w', encoding='utf-8')
     with open(NerSourcePath, 'r', encoding='utf-8') as f:
@@ -117,7 +119,7 @@ def gen_train_test():
             if verify_line(line):
                 line = line.strip()
                 input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id, class_to_num \
-                    = parse_ori_line(line)
+                    = parse_ori_line(line, class_to_num)
                 rad = random.randint(0, 10)
                 if rad < 1:
                     f_test.write(input_tokens + ',' + ' '.join([str(x) for x in input_tokens_id]) + ',' +
