@@ -9,8 +9,59 @@ from roberta.data.ner_dataset import *
 from roberta.layers.Roberta_ner import RobertaNer
 
 
-def extract_entities(class_list):
-    pass
+def extract_output_entities(class_list):
+    entities = {}
+    current = 1000
+    state = 'out'
+    for i, cla in enumerate(class_list):
+        if cla == NormalChar or cla == 'pad':
+            current = 1000
+            state = 'out'
+            continue
+        if cla[0] == 'b':
+            current = i
+            state = 'in'
+            entities[current] = []
+            entities[current].append(cla)
+        if cla[0] == 'i':
+            if state == 'in':
+                entities[current].append(cla)
+            else:
+                current = i
+                state = 'in'
+                entities[current] = []
+                entities[current].append(cla)
+        if cla[0] == 'e':
+            if state == 'in':
+                entities[current].append(cla)
+                current = 1000
+                state = 'out'
+            else:
+                entities[i] = [cla]
+    return entities
+
+
+def extract_label_entities(class_list):
+    entities = {}
+    current = 1000
+    state = 'out'
+    for i, cla in enumerate(class_list):
+        if cla == NormalChar:
+            continue
+        if cla[0] == 'b':
+            current = i
+            state = 'in'
+            entities[current] = []
+            entities[current].append(cla)
+        if cla[0] == 'i':
+            entities[current].append(cla)
+        if cla[0] == 'e':
+            if state == 'in':
+                entities[current].append(cla)
+                current = 1000
+            else:
+                entities[i] = [cla]
+    return entities
 
 
 if __name__ == '__main__':
@@ -81,9 +132,10 @@ if __name__ == '__main__':
         # test
         with torch.no_grad():
             roberta_ner.eval()
-            test_count = 0
-            top1_count = 0
-            top5_count = 0
+            accuracy = 0
+            recall = 0
+            entities_count = 0
+
             for test_data in testset:
                 label2class = []
                 output2class = []
@@ -102,15 +154,23 @@ if __name__ == '__main__':
                     output = output[0]
                     output2class.append(num_to_class[output])
                     label2class.append(num_to_class[label_list[i]])
-                output_entities = extract_entities(output2class)
-                label_entities = extract_entities(label2class)
+                output_entities = extract_output_entities(output2class)
+                label_entities = extract_label_entities(label2class)
 
-
-
-            # if test_count:
-            #     top1_acc = float(top1_count) / float(test_count)
-            #     acc = round(top1_acc, 2)
-            #     print('top1纠正正确率：%s' % acc)
-            #     top5_acc = float(top5_count) / float(test_count)
-            #     acc = round(top5_acc, 2)
-            #     print('top5纠正正确率：%s\n' % acc)
+                # 核算结果
+                entities_count += len(label_entities.keys())
+                recall_list = []
+                for out_num in output_entities.keys():
+                    if out_num in label_entities.keys():
+                        recall_list.append(out_num)
+                recall += len(recall_list)
+                for num in recall_list:
+                    if output_entities[num] == label_entities[num]:
+                        accuracy += 0
+            if entities_count:
+                recall_rate = float(recall) / float(entities_count)
+                recall_rate = round(recall_rate, 4)
+                print('实体召回率为：%s' % recall_rate)
+                accuracy_rate = float(accuracy) / float(entities_count)
+                accuracy_rate = round(accuracy_rate, 4)
+                print('实体正确率为：%s\n' % accuracy_rate)
