@@ -76,7 +76,7 @@ local2target_transformer = {
 }
 
 # ## NER训练调试参数开始 ## #
-NEREpochs = 32
+NEREpochs = 8
 NERLearningRate = 1e-3
 NerBatchSize = 8
 MedicineLength = 32

@@ -144,8 +144,8 @@ if __name__ == '__main__':
                 input_token = test_data['input_tokens_id'].unsqueeze(0).to(device)
                 segment_ids = test_data['segment_ids'].unsqueeze(0).to(device)
                 input_token_list = input_token.tolist()
-                label_list = test_data['input_tokens_class_id'].tolist()
                 input_len = len([x for x in input_token_list[0] if x]) - 2
+                label_list = test_data['input_tokens_class_id'].tolist()[1:input_len + 1]
                 mlm_output = roberta_ner(input_token, segment_ids)[:, 1:input_len + 1, :]
                 output_tensor = torch.nn.Softmax(dim=-1)(mlm_output)
                 output_topk = torch.topk(output_tensor, 1).indices.squeeze(0).tolist()
@@ -167,7 +167,7 @@ if __name__ == '__main__':
                 recall += len(recall_list)
                 for num in recall_list:
                     if output_entities[num] == label_entities[num]:
-                        accuracy += 0
+                        accuracy += 1
             if entities_count:
                 recall_rate = float(recall) / float(entities_count)
                 recall_rate = round(recall_rate, 4)

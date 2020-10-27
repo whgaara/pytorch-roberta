@@ -82,8 +82,8 @@ if __name__ == '__main__':
                 input_token = test_data['input_token_ids'].unsqueeze(0).to(device)
                 segment_ids = test_data['segment_ids'].unsqueeze(0).to(device)
                 input_token_list = input_token.tolist()
-                label_list = test_data['token_ids_labels'].tolist()
                 input_len = len([x for x in input_token_list[0] if x]) - 2
+                label_list = test_data['token_ids_labels'].tolist()
                 mlm_output = roberta(input_token, segment_ids)[:, 1:input_len + 1, :]
                 output_tensor = torch.nn.Softmax(dim=-1)(mlm_output)
                 output_topk = torch.topk(output_tensor, 5).indices.squeeze(0).tolist()
