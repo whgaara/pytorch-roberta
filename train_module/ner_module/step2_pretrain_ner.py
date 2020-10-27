@@ -21,15 +21,10 @@ if __name__ == '__main__':
     if Debug:
         print('Total Parameters:', sum([p.nelement() for p in roberta_ner.parameters()]))
 
-    # if UsePretrain and os.path.exists(PretrainPath):
-    #     if SentenceLength == 512:
-    #         print('开始加载预训练模型！')
-    #         roberta.load_pretrain(SentenceLength)
-    #         print('完成加载预训练模型！')
-    #     else:
-    #         print('开始加载本地模型！')
-    #         roberta.load_pretrain(SentenceLength)
-    #         print('完成加载本地模型！')
+    if UsePretrain and os.path.exists(PretrainPath):
+        print('开始加载本地模型！')
+        roberta_ner.load_pretrain(MedicineLength)
+        print('完成加载本地模型！')
 
     optim = Adam(roberta_ner.parameters(), lr=LearningRate)
     criterion = nn.CrossEntropyLoss().to(device)
