@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     if UsePretrain and os.path.exists(NerFinetunePath):
         print('开始加载本地模型！')
-        roberta_ner.load_pretrain(MedicineLength)
+        roberta_ner.load_pretrain(NerFinetunePath)
         print('完成加载本地模型！')
 
     optim = Adam(roberta_ner.parameters(), lr=NERLearningRate)

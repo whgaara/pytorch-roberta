@@ -66,7 +66,7 @@ class RobertaNer(nn.Module):
 
     def load_pretrain(self, path=NerFinetunePath):
         pretrain_model_dict = torch.load(path)
-        self.load_state_dict(pretrain_model_dict)
+        self.load_state_dict(pretrain_model_dict.state_dict())
 
     def forward(self, input_token, segment_ids):
         # embedding
