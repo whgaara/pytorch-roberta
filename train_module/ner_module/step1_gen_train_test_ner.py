@@ -29,8 +29,8 @@ def parse_ori_line(ori_line, class_to_num):
     """
     :param ori_line: 六味地黄{3,ypcf}丸{1,yplb}
     :return:
-    [123, 233, 334, 221, 299, ...]
-    [b-ypcf, i-ypcf, i-ypcf, e-ypcf, e-yplb]
+    [101, 123, 233, 334, 221, 299, ..., 102, ...]
+    [ptzf, b-ypcf, i-ypcf, i-ypcf, e-ypcf, e-yplb, ..., pytzf, ...]
     """
     ori_line = ori_line.strip().replace(' ', '')
     input_tokens = ''
