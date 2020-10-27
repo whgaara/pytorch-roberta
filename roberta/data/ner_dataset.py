@@ -1,6 +1,5 @@
 import pickle
 
-from tqdm import tqdm
 from roberta.common.tokenizers import Tokenizer
 from pretrain_config import *
 from torch.utils.data import Dataset
@@ -23,7 +22,7 @@ class NerDataSet(Dataset):
                     line = line.strip()
                     self.src_lines.append(line)
 
-        for line in tqdm(self.src_lines):
+        for line in self.src_lines:
             items = line.split(',')
             input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id = items
             if not input_tokens:
@@ -68,7 +67,7 @@ class NerTestSet(Dataset):
                     line = line.strip()
                     self.src_lines.append(line)
 
-        for line in tqdm(self.src_lines):
+        for line in self.src_lines:
             items = line.split(',')
             input_tokens, input_tokens_id, input_tokens_class, input_tokens_class_id = items
             if not input_tokens:

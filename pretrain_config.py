@@ -22,9 +22,9 @@ UsePretrain = True
 ModelClass = 'Bert'
 
 # ## MLM训练调试参数开始 ## #
-Epochs = 16
+MLMEpochs = 16
 WordGenTimes = 10
-LearningRate = 1e-4
+MLMLearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1
     BatchSize = 16
@@ -76,7 +76,9 @@ local2target_transformer = {
 }
 
 # ## NER训练调试参数开始 ## #
-NerBatchSize = 4
+NEREpochs = 32
+NERLearningRate = 1e-3
+NerBatchSize = 8
 MedicineLength = 32
 # ## NER训练调试参数结束 ## #
 

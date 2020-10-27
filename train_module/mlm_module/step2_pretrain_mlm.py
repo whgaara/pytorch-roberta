@@ -31,10 +31,10 @@ if __name__ == '__main__':
     dataloader = DataLoader(dataset=dataset, batch_size=BatchSize, shuffle=True, drop_last=True)
     testset = RobertaTestSet(TestPath)
 
-    optim = Adam(roberta.parameters(), lr=LearningRate)
+    optim = Adam(roberta.parameters(), lr=MLMLearningRate)
     criterion = nn.CrossEntropyLoss().to(device)
 
-    for epoch in range(Epochs):
+    for epoch in range(MLMEpochs):
         # train
         if Debug:
             print('第%s个Epoch %s' % (epoch, get_time()))

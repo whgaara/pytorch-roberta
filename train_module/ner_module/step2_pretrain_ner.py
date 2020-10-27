@@ -3,6 +3,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 import torch.nn as nn
 
+from tqdm import tqdm
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 from roberta.data.ner_dataset import *
@@ -88,10 +89,10 @@ if __name__ == '__main__':
         roberta_ner.load_pretrain(MedicineLength)
         print('完成加载本地模型！')
 
-    optim = Adam(roberta_ner.parameters(), lr=LearningRate)
+    optim = Adam(roberta_ner.parameters(), lr=NERLearningRate)
     criterion = nn.CrossEntropyLoss().to(device)
 
-    for epoch in range(Epochs):
+    for epoch in range(NEREpochs):
         # train
         if Debug:
             print('第%s个Epoch %s' % (epoch, get_time()))
