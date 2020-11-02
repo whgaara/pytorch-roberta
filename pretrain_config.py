@@ -24,6 +24,10 @@ ModelClass = 'Bert'
 # ## MLM训练调试参数开始 ## #
 MLMEpochs = 16
 WordGenTimes = 10
+if WordGenTimes > 1:
+    RanWrongDivisor = 1.0
+else:
+    RanWrongDivisor = 0.15
 MLMLearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1

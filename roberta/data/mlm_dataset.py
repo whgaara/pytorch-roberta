@@ -1,4 +1,5 @@
 import math
+import random
 import pkuseg
 import numpy as np
 
@@ -123,8 +124,11 @@ class DataFactory(object):
                     tmp_masks[i] = rand_num
                     instances.append([tmp_ids, tmp_masks])
             tmp_masks = [0] * SentenceLength
-            rand_num = np.random.randint(672, 7992)
-            tmp_masks[i] = rand_num
+            if random.random() < RanWrongDivisor:
+                rand_num = np.random.randint(672, 7992)
+                tmp_masks[i] = rand_num
+            else:
+                tmp_masks[i] = tmp_ids[i]
             instances.append([tmp_ids, tmp_masks])
         return instances
 
