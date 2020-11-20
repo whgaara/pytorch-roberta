@@ -28,6 +28,7 @@ if WordGenTimes > 1:
     RanWrongDivisor = 1.0
 else:
     RanWrongDivisor = 0.15
+HiddenLayerNum = 2
 MLMLearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1
@@ -47,7 +48,6 @@ DropOut = 0.1
 MaskRate = 0.15
 VocabSize = len(open(VocabPath, 'r', encoding='utf-8').readlines())
 HiddenSize = 768
-HiddenLayerNum = 12
 IntermediateSize = 3072
 AttentionHeadNum = 12
 
