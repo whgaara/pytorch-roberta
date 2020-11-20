@@ -31,8 +31,8 @@ else:
 MLMLearningRate = 1e-4
 if ModelClass == 'Bert':
     RepeatNum = 1
-    BatchSize = 16
-    SentenceLength = 128
+    BatchSize = 4
+    SentenceLength = 32
     PretrainPath = '../../checkpoint/finetune/mlm_trained_%s.model' % SentenceLength
 if ModelClass == 'RobertaMlm':
     RepeatNum = 10
