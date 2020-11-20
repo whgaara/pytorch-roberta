@@ -99,7 +99,10 @@ class RobertaMlm(nn.Module):
         for i in range(self.num_hidden_layers):
             if Debug:
                 print('获取第%s个transformer-block %s' % (i, get_time()))
-            feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
+            if i == 0:
+                feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
+            else:
+                feedforward_x = self.transformer_blocks[i](feedforward_x, attention_mask)
         # mlm
         if Debug:
             print('进行mlm全连接 %s' % get_time())
