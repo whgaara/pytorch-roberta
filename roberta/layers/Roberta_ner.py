@@ -74,7 +74,10 @@ class RobertaNer(nn.Module):
         attention_mask = self.gen_attention_masks(segment_ids).to(device)
         feedforward_x = None
         for i in range(self.num_hidden_layers):
-            feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
+            if i == 0:
+                feedforward_x = self.transformer_blocks[i](embedding_x, attention_mask)
+            else:
+                feedforward_x = self.transformer_blocks[i](feedforward_x, attention_mask)
         # ner
         output = self.mlm(feedforward_x)
         return output
