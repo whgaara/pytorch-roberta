@@ -93,7 +93,10 @@ class RobertaMlm(nn.Module):
         embedding_x = self.roberta_emd(input_token, segment_ids)
         if Debug:
             print('获取attention_mask %s' % get_time())
-        attention_mask = self.gen_attention_masks(segment_ids).to(device)
+        if AttentionMask:
+            attention_mask = self.gen_attention_masks(segment_ids).to(device)
+        else:
+            attention_mask = None
         feedforward_x = None
         # transformer
         for i in range(self.num_hidden_layers):

@@ -20,6 +20,7 @@ UsePretrain = True
 
 # 任务模式
 ModelClass = 'Bert'
+AttentionMask = False
 
 # ## MLM训练调试参数开始 ## #
 MLMEpochs = 16

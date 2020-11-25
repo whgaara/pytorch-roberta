@@ -71,7 +71,10 @@ class RobertaNer(nn.Module):
     def forward(self, input_token, segment_ids):
         # embedding
         embedding_x = self.roberta_emd(input_token, segment_ids)
-        attention_mask = self.gen_attention_masks(segment_ids).to(device)
+        if AttentionMask:
+            attention_mask = self.gen_attention_masks(segment_ids).to(device)
+        else:
+            attention_mask = None
         feedforward_x = None
         for i in range(self.num_hidden_layers):
             if i == 0:
